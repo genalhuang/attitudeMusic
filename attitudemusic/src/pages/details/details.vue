@@ -9,6 +9,10 @@
         <div class="details-text title">{{playlist.name}}</div>
         <div class="details-text">{{playlist.description}}</div>
         <div class="details-text">创建时间 : {{playlist.createTime | formatDate}}</div>
+        <div class="details-img" @click='changekLike'>
+          <img v-if='like' src="@/assets/img/like.png" alt="">
+          <img v-if='!like' src="@/assets/img/unlike.png" alt="">
+        </div>
       </div>
     </div>
     <music-list class='music-list' :list="list" @selectMusic="selectMusic" />
@@ -20,6 +24,7 @@ import { getPlaylistDetail } from "api";
 import { formatTopSongs } from "@/utils/song";
 import { format, formatDate } from "@/utils/util";
 import MusicList from "components/music-list/music-list.vue";
+import { favoriteList } from 'api/favorite';
 export default {
   name: "Detail",
   components: {
@@ -36,19 +41,34 @@ export default {
   data() {
     return {
       list: [],
-      playlist: {}
+      playlist: {},
+      like: false,
+      listId: 0,
+      favoriteList: []
     };
   },
   activated() {
+    this.favoriteList = this.$store.state.user.favoriteList;
+    this.listId = parseInt(this.$route.params.id, 10)
     // 获取歌单详情
     getPlaylistDetail(this.$route.params.id).then(res => {
       if (res.data.code === 200) {
         this.playlist = res.data.playlist;
-        console.log(this.playlist);
         this.list = formatTopSongs(this.playlist.tracks);
         document.title = `${this.playlist.name} - ATM`;
       }
     });
+    if (this.$store.state.user.favoriteList.length === 0) {
+      this.like = false
+    } else {
+      if (this.$store.state.user.favoriteList.indexOf(this.listId) !== -1) {
+        this.like = true;
+      } else {
+        this.like = false;
+      }
+    }
+ 
+
   },
   methods: {
     selectMusic(data) {
@@ -63,6 +83,24 @@ export default {
         }) === -1
       ) {
         this.$store.commit("setHistoryList", data);
+      }
+    },
+
+    async changekLike() {
+      if(!this.$store.state.user.username) {
+        this.$message.error('请先登录账号');
+        return;
+      } 
+      const params = {
+        ...this.$store.state.user,
+        listId: this.playlist.id
+      }
+      const data = await favoriteList(params)
+      if(typeof data === 'object') {
+        this.$message.success('歌单更新成功')
+        this.like = !this.like;
+      } else {
+        this.$message.error(data.data)
       }
     }
   }
@@ -94,6 +132,14 @@ export default {
         font-size: @font_size_large_x;
         font-weight: bold;
         margin-top: 20px;
+      }
+      .details-img {
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        > img {
+          width: 60px;
+        }
       }
       .details-text.title {
         font-size: 40px;

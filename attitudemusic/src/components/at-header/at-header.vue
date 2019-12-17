@@ -1,10 +1,8 @@
 <template>
   <div class="music">
-    <div class="music-content">
-      <div>ATM</div>
-      <a-dropdown>
+      <a-dropdown class='music-account'>
         <a class="ant-dropdown-link" href="#" v-if='!isAccount'> 账号管理 <a-icon type="down" /> </a>
-        <a class="ant-dropdown-link" href="#" v-if='isAccount'> {{username}} <a-icon type="down" /> </a>
+        <a class="ant-dropdown-link" href="#" v-if='isAccount'> 欢迎进入ATM, {{username}} <a-icon type="down" /> </a>
         <a-menu slot="overlay">
           <a-menu-item  v-if='!isAccount'>
             <a href="javascript:;" @click='login'>登录</a>
@@ -17,6 +15,8 @@
           </a-menu-item>
         </a-menu>
       </a-dropdown>
+    <div class="music-content">
+      <div>ATM</div>
       <a-modal title="" v-model="showDialog" @ok='confirm' okText="确认" cancelText="取消">
         <div class="music-register">
           账号:<a-input v-model='username'></a-input>
@@ -68,6 +68,7 @@ export default {
         this.$message.success(data.data.username + ', 欢迎登录！')
         this.username = data.data.username
         this.$store.commit('setUserInfo', data.data);
+        this.$router.push({ path: '/'});
       } else {
         this.$message.error(data.data)
       }
@@ -75,6 +76,7 @@ export default {
     out() {
       this.$message.success('退出成功');
       this.isAccount = false;
+      this.$router.push({ path: '/'});
     }
   }
 }
@@ -83,10 +85,15 @@ export default {
 
 <style scoped lang="less" >
  .music {
+   .music-account {
+     position: absolute;
+     right: 20px;
+     top: 80px;
+     color: #fff;
+   }
    .music-content {
       text-align: center;
       height: 10vh;
-      font-size: 30px;
       background-color: @attitude_color;
       line-height: 10vh;
       color: #fff;

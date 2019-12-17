@@ -2,12 +2,6 @@
   <!--排行榜-->
   <div class="topList">
     <div class="topList-content">
-      <!--      <div class="topList-artist">-->
-      <!--        <div>歌手榜</div>-->
-      <!--        <div v-for='(artist, index) in topList.artistToplist.artists' :key='index'>-->
-      <!--          <div>{{artist}}</div>-->
-      <!--        </div>-->
-      <!--      </div>-->
       <div
         v-for="(list, i) in topList.list"
         :key="i"

@@ -6,7 +6,12 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     historyList: [],
-    user: {}
+    user: {
+      favoriteList: [],
+      favoriteSong: [],
+      userName: '',
+      password: ''
+    }
   },
   mutations: {
     setHistoryList(state, history) {

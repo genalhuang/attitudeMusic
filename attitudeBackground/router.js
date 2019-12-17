@@ -64,19 +64,34 @@ router.get('/clearUserList', function (req, res) {
 })
 
 // 更新用户信息 
-router.get('/favorite', function (req, res) {
-  var postData = {
-    username: req.query.username,
-    password: req.query.password
+router.post('/favorite', function (req, res) {
+  const listId = req.body.params.listId
+  const postData = {
+    username: req.body.params.username,
+    password: req.body.params.password
   };
-  // 保存到数据库
-  User.update(postData, req.query, function (err, data) {
+  User.findOne(postData, function (err, data) {
     if (err) throw err;
-    if (data) {
-      res.end(JSON.stringify(req.query));
+    if(data.favoriteList.length === 0) {
+      data.favoriteList.push(listId)
     } else {
-      res.send('更新失败!');
+      let index = data.favoriteList.indexOf(listId)
+      if( index === -1) {
+        data.favoriteList.push(listId)
+      } else {
+        data.favoriteList.splice(index, index + 1)
+      }
     }
-  })
+    User.update(postData, data, function (err, data2) {
+      if (err) throw err;
+      if (data2) {
+        console.log(data.favoriteList)
+        res.end(JSON.stringify(data))
+      } else {
+        res.send('更新歌单失败!');
+      }
+    })
+  });
+
 })
 module.exports = router

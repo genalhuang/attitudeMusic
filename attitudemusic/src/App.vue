@@ -9,6 +9,12 @@ import AtHeader from "components/at-header/at-header.vue";
 export default {
   components: {
     AtHeader
+  },
+  mounted() {
+    window.onbeforeunload = () => {      //刷新时弹出提示
+      this.$router.push({path: '/'})
+      alert('234')
+    };
   }
 };
 </script>
@@ -18,6 +24,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
+  font-size: @font_size_large;
   color: #2c3e50;
 }
 </style>

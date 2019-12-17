@@ -11,10 +11,10 @@ var userSchema = new Schema({
         type: String
     },
     favoriteList: {
-      type: Object
+      type: Array
     },
     favoriteSong: {
-      type: Object
+      type: Array
     }
 });
 // 将数据模型暴露出去
