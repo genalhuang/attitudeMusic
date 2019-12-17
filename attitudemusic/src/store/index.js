@@ -5,11 +5,15 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    historyList: []
+    historyList: [],
+    user: {}
   },
   mutations: {
     setHistoryList(state, history) {
-      state.historyList.unshift(history)
+      state.historyList.unshift(history);
+    },
+    setUserInfo(state, user) {
+      state.user = user;
     }
   },
   actions: {

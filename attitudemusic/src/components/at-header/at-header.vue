@@ -4,10 +4,10 @@
       <div>ATM</div>
       <a-dropdown>
         <a class="ant-dropdown-link" href="#" v-if='!isAccount'> 账号管理 <a-icon type="down" /> </a>
-        <a class="ant-dropdown-link" href="#" v-if='isAccount'> {{accountName}} <a-icon type="down" /> </a>
+        <a class="ant-dropdown-link" href="#" v-if='isAccount'> {{username}} <a-icon type="down" /> </a>
         <a-menu slot="overlay">
           <a-menu-item  v-if='!isAccount'>
-            <a href="javascript:;" @click='register'>登录</a>
+            <a href="javascript:;" @click='login'>登录</a>
           </a-menu-item>
           <a-menu-item v-if='!isAccount'>
             <a href="javascript:;"  @click='register'>注册</a>
@@ -17,9 +17,9 @@
           </a-menu-item>
         </a-menu>
       </a-dropdown>
-      <a-modal title="" v-model="showregister" @ok='confirmRegister' okText="确认" cancelText="取消">
+      <a-modal title="" v-model="showDialog" @ok='confirm' okText="确认" cancelText="取消">
         <div class="music-register">
-          账号:<a-input v-model='account'></a-input>
+          账号:<a-input v-model='username'></a-input>
           密码:<a-input v-model='password'></a-input>
         </div>
       </a-modal>
@@ -28,35 +28,48 @@
 </template>
 
 <script>
-import { accountEnter } from 'api/account'
+import { accountRegister, accountLogin } from 'api/account'
 export default {
   name: 'Music',
   components: {
   },
   data() {
     return {
-      showregister : false,
-      account: '',
+      showDialog : false,
+      username: '',
       password: '',
-      accountName: '',
-      isAccount: false
+      isAccount: false,
+      type: ''
     }
   },
   methods: {
     register() {
-      this.account = '';
+      this.type = 'register';
+      this.username = '';
       this.password = '';
-      this.showregister = true
+      this.showDialog = true
     },
-    async confirmRegister() {
-      this.showregister = false;
-      let data = await accountEnter(this.account, this.password)
-      if(data.status === 200 ) {
-        this.accountName = data.data.account
+    login() {
+      this.type = 'login';
+      this.username = '';
+      this.password = '';
+      this.showDialog = true
+    },
+    async confirm() {
+      this.showDialog = false;
+      let data;
+      if (this.type === 'register') {
+        data = await accountRegister(this.username, this.password)
+      } else if (this.type === 'login') {
+        data = await accountLogin(this.username, this.password)
+      }
+      if(typeof data.data === 'object' ) {
         this.isAccount = true;
-        this.$message.success('登录成功')
+        this.$message.success(data.data.username + ', 欢迎登录！')
+        this.username = data.data.username
+        this.$store.commit('setUserInfo', data.data);
       } else {
-        this.$message.error('登录失败')
+        this.$message.error(data.data)
       }
     },
     out() {

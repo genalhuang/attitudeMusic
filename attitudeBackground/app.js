@@ -1,10 +1,13 @@
 const http = require('http')
-var router = require('./router')
+const router = require('./router')
 const express = require('express')
-var bodyParser = require('body-parser')
-var app = express()
+const app = express()
+const mongoose = require('./mongoose')
+// 解析post请求的参数
+const bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())
+
 // 设置跨域
 app.all('*', function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -14,7 +17,10 @@ app.all('*', function (req, res, next) {
   next();
 });
  
+ // 连接数据库
+mongoose()
+
 app.use(router)
 app.listen('4000', function () {
-  console.log('陈冠希node后台启动')
+  console.log('ATM后台启动')
 })
