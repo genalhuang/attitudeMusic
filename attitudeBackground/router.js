@@ -24,7 +24,7 @@ router.post('/register', function (req, res) {
       // 保存到数据库
       User.create(postData, function (err, data) {
         if (err) throw err;
-        res.end(JSON.stringify(postData));
+        res.end(JSON.stringify(data));
       })
     }
   });
@@ -41,7 +41,7 @@ router.post('/login', function (req, res) {
   }, function (err, data) {
     if (err) throw err;
     if (data) {
-      res.send(JSON.stringify(postData));
+      res.send(JSON.stringify(data));
     } else {
       res.send('账号或密码错误');
     }
@@ -50,7 +50,7 @@ router.post('/login', function (req, res) {
 
 // 获取所有用户列表
 router.get('/userList', function (req, res) {
-  var userList = User.find({}, function (err, data) {
+  User.find({}, function (err, data) {
     if (err) throw err;
     res.send(data)
   });
