@@ -64,7 +64,7 @@ router.get('/clearUserList', function (req, res) {
 })
 
 // 更新用户信息 
-router.post('/favorite', function (req, res) {
+router.post('/favoriteList', function (req, res) {
   const listId = req.body.params.listId
   const postData = {
     username: req.body.params.username,
@@ -91,6 +91,21 @@ router.post('/favorite', function (req, res) {
         res.send('更新歌单失败!');
       }
     })
+  });
+
+})
+
+// 查询收藏列表 
+router.get('/favoriteList', function (req, res) {
+  console.log(req.query)
+  const postData = {
+    username: req.query.username,
+    password: req.query.password
+  };
+
+  User.findOne(postData, function (err, data) {
+    if (err) throw err;
+    res.end(JSON.stringify(data));
   });
 
 })

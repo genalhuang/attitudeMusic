@@ -63,7 +63,7 @@ export default {
       } else if (this.type === 'login') {
         data = await accountLogin(this.username, this.password)
       }
-      if(typeof data.data === 'object' ) {
+      if (typeof data.data === 'object') {
         this.isAccount = true;
         this.$message.success(data.data.username + ', 欢迎登录！')
         this.username = data.data.username

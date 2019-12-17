@@ -24,7 +24,7 @@ import { getPlaylistDetail } from "api";
 import { formatTopSongs } from "@/utils/song";
 import { format, formatDate } from "@/utils/util";
 import MusicList from "components/music-list/music-list.vue";
-import { favoriteList } from 'api/favorite';
+import { postFavoriteList } from 'api/favorite';
 export default {
   name: "Detail",
   components: {
@@ -67,8 +67,6 @@ export default {
         this.like = false;
       }
     }
- 
-
   },
   methods: {
     selectMusic(data) {
@@ -95,7 +93,7 @@ export default {
         ...this.$store.state.user,
         listId: this.playlist.id
       }
-      const data = await favoriteList(params)
+      const data = await postFavoriteList(params)
       if(typeof data === 'object') {
         this.$message.success('歌单更新成功')
         this.like = !this.like;
