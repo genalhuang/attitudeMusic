@@ -8,6 +8,8 @@ import details from 'pages/details/details'
 import historyList from 'pages/historyList/historyList'
 import search from 'pages/search/search'
 import comment from 'pages/comment/comment'
+import userSong from 'pages/userSong/userSong'
+
 Vue.use(Router)
 
 const routes = [
@@ -32,6 +34,14 @@ const routes = [
         component: userlist,
         meta: {
           title: '我的歌单',
+          keepAlive: true
+        }
+      },
+      {
+        path: '/music/userSong', // 我的歌单
+        component: userSong,
+        meta: {
+          title: '我喜欢',
           keepAlive: true
         }
       },
