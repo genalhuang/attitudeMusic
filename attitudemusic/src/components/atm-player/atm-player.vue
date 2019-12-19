@@ -14,7 +14,11 @@
           <img v-if="!play" src="@/assets/atm_player/start.png" alt="暂停" @click="pauseMusic" />
         </div>
         <div class="atm-btn">
-          <img src="@/assets/atm_player/next.png" alt="上一首" @click="nextMusic" />
+          <img src="@/assets/atm_player/next.png" alt="下一首" @click="nextMusic" />
+        </div>
+        <div class="atm-btn">
+          <img v-if="single" src="@/assets/atm_player/single.png" alt="单曲" @click="singleMusic" />
+          <img v-if="!single" src="@/assets/atm_player/nosingle.png" alt="不单曲" @click="singleMusic" />
         </div>
       </div>
       <div class="atm-progress">
@@ -50,7 +54,8 @@ export default {
       play: true,
       duration: 0,
       currentTime: 0,
-      interval: ""
+      interval: "",
+      single: false
     };
   },
   mounted() {
@@ -74,15 +79,18 @@ export default {
         clearInterval(this.interval);
       }
       this.interval = setInterval(() => {
-        if (
-          this.currentTime === this.audio.duration &&
-          this.currentTime !== 0
-        ) {
-          this.audio.currentTime = 0;
-          this.currentTime = 0;
-          this.audio.pause();
-          this.nextMusic();
-          this.play = true;
+        if (this.currentTime === this.audio.duration &&this.currentTime !== 0) 
+        { 
+          if (this.single) {
+            this.audio.currentTime = 0;  
+            this.playMusic()
+          } else {
+            this.audio.currentTime = 0;
+            this.currentTime = 0;
+            this.audio.pause();
+            this.nextMusic();
+            this.play = true;
+          }
         }
         this.duration = this.audio.duration;
         this.currentTime = this.audio.currentTime;
@@ -127,6 +135,9 @@ export default {
       this.audio.src = data[nowIndex + 1].url;
       this.audio.data = data[nowIndex + 1];
       this.audio.play();
+    },
+    singleMusic() {
+      this.single = !this.single;
     }
   }
 };
