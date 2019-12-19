@@ -4,9 +4,10 @@
     <template v-if="list.length>0">
       <div class="list-item list-header">
         <span class="list-name">歌曲</span>
+        <span class="list-num"></span>
         <span class="list-artist">歌手</span>
-        <span v-if="'listType' === 1" class="list-time">时长</span>
-        <span v-else class="list-album">专辑</span>
+        <span class="list-time">时长</span>
+        <span class="list-album">专辑</span>
       </div>
       <div ref="listContent" class="list-content">
         <div v-for="(item,index) in list" :key="item.id" class="list-item">
@@ -14,9 +15,13 @@
           <div class="list-name" @click="clickMusic(item)">
             <span>{{ item.name }}</span>
           </div>
+          <div class="list-num" @click='_postFavoriteSong(index)'>     
+            <img v-if='item.like' class='musicList-img' src="@/assets/img/like.png" alt="">
+            <img v-if='!item.like' class='musicList-img' src="@/assets/img/unlike.png" alt="">
+          </div>
           <span class="list-artist">{{ item.singer }}</span>
-          <span v-if="'listType' === 1" class="list-time">{{ (item.duration % 3600) | format }}</span>
-          <span v-else class="list-album">{{ item.album }}</span>
+          <span class="list-time">{{ (item.duration % 3600) | format }}</span>
+          <span class="list-album">{{ item.album }}</span>
         </div>
       </div>
     </template>
@@ -24,6 +29,8 @@
 </template>
 
 <script>
+import { postFavoriteSong, getFavoriteSong } from 'api/favorite';
+import { format } from 'utils/util'
 export default {
   name: "MusicList",
   props: {
@@ -33,6 +40,18 @@ export default {
       default: () => []
     }
   },
+  data() {
+    return {
+      idList:[]
+    }
+  },
+  filters: {
+    // 时间格式化
+    format
+  },
+  created() {
+    this._getFavoriteSong()
+  },
   methods: {
     clickMusic(item) {
       this.$emit("selectMusic", item);
@@ -41,6 +60,43 @@ export default {
     scrollTo() {
       this.$refs.listContent.scrollTop = 0
     },
+    async _getFavoriteSong() {
+      // 请求获取最新收藏id数组
+      if(this.$store.state.user.username) {
+        const user = this.$store.state.user
+        const data = await getFavoriteSong(user)
+        if(typeof data.data === 'object') {
+          this.idList = data.data.favoriteSong;
+          this.$store.commit('setUserInfo', data.data);
+          this.list.filter((item) => {
+            if (this.idList.indexOf(item.id)) {
+              item.like = true;
+            } else {
+              item.like = false;
+            }
+          })
+        }
+      } else {
+        this.$message.error('请先登录!')
+      }
+      console.log(this.idList)
+    },
+    async _postFavoriteSong(index) {
+      const song = this.list[index];
+      const params = {
+        ...this.$store.state.user,
+        songId: song.id
+      }
+      const data =  await postFavoriteSong(params)
+      if(typeof data === 'object') {
+        this.$message.success('歌单更新成功')
+        song.like = !song.like
+        this.$set(this.list,index, song)
+      } else {
+        this.$message.error(data.data)
+      }
+      console.log(song)
+    } 
   }
 };
 </script>
@@ -72,6 +128,10 @@ export default {
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  .musicList-img {
+    width:100%;
+
+  }
   .list-item:hover {
     background-color: @attitude_color;
     color: #fff;

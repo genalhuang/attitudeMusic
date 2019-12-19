@@ -53,6 +53,7 @@ export default {
 <style lang="less" scoped>
 .topList {
   width: 1500px;
+  height: 70vh;
   margin: 0 auto;
   overflow: auto;
   .topList-content {
