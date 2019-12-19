@@ -36,7 +36,11 @@ export default {
   methods: {
     clickMusic(item) {
       this.$emit("selectMusic", item);
-    }
+    },
+    // 回到顶部
+    scrollTo() {
+      this.$refs.listContent.scrollTop = 0
+    },
   }
 };
 </script>
