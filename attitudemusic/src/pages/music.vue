@@ -27,7 +27,7 @@ export default {
 <style lang="less" scoped>
 .music {
   .music-content {
-    overflow: auto;
+    overflow: hidden;
     height: 70vh;
   }
 }

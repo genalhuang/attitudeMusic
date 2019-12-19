@@ -1,22 +1,22 @@
 <template>
   <div class="music">
-      <a-dropdown class='music-account'>
-        <a class="ant-dropdown-link" href="#" v-if='!isAccount'> 账号管理 <a-icon type="down" /> </a>
-        <a class="ant-dropdown-link" href="#" v-if='isAccount'> 欢迎进入ATM, {{username}} <a-icon type="down" /> </a>
-        <a-menu slot="overlay">
-          <a-menu-item  v-if='!isAccount'>
-            <a href="javascript:;" @click='login'>登录</a>
-          </a-menu-item>
-          <a-menu-item v-if='!isAccount'>
-            <a href="javascript:;"  @click='register'>注册</a>
-          </a-menu-item>
-          <a-menu-item v-if='isAccount'>
-            <a href="javascript:;" @click='out'>退出</a>
-          </a-menu-item>
-        </a-menu>
-      </a-dropdown>
+    <a-dropdown class='music-account'>
+      <a class="ant-dropdown-link" href="#" v-if='!isAccount'> 账号管理 <a-icon type="down" /> </a>
+      <a class="ant-dropdown-link" href="#" v-if='isAccount'> 欢迎进入ATM, {{username}} <a-icon type="down" /> </a>
+      <a-menu slot="overlay">
+        <a-menu-item  v-if='!isAccount'>
+          <a href="javascript:;" @click='login'>登录</a>
+        </a-menu-item>
+        <a-menu-item v-if='!isAccount'>
+          <a href="javascript:;"  @click='register'>注册</a>
+        </a-menu-item>
+        <a-menu-item v-if='isAccount'>
+          <a href="javascript:;" @click='out'>退出</a>
+        </a-menu-item>
+      </a-menu>
+    </a-dropdown>
     <div class="music-content">
-      <div>ATM</div>
+      <div class='music-title'>ATM</div>
       <a-modal title="" v-model="showDialog" @ok='confirm' okText="确认" cancelText="取消">
         <div class="music-register">
           账号:<a-input v-model='username'></a-input>
@@ -97,6 +97,9 @@ export default {
       background-color: @attitude_color;
       line-height: 10vh;
       color: #fff;
+      .music-title {
+        font-size: @font_size_large_x;
+      }
       .ant-dropdown-link {
         position: fixed;
         right: 30px;
