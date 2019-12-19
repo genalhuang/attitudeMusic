@@ -1,26 +1,27 @@
 <template>
   <!--搜索-->
   <div class="search">
-    <div class="search-head">
-      <span
-        v-for="(item,index) in Artists.slice(0,5)"
-        :key="index"
-        @click="clickHot(item.first)"
-      >{{ item.first }}</span>
-      <input
-        v-model.trim="searchValue"
-        class="search-input"
-        type="text"
-        placeholder="音乐/歌手"
-        @keyup.enter="onEnter"
+    <a-spin :spinning='spinning'>
+      <div class="search-head">
+        <span
+          v-for="(item,index) in Artists.slice(0,5)"
+          :key="index"
+          @click="clickHot(item.first)"
+        >{{ item.first }}</span>
+        <input
+          v-model.trim="searchValue"
+          class="search-input"
+          type="text"
+          placeholder="音乐/歌手"
+          @keyup.enter="onEnter"
+        />
+      </div>
+      <music-list
+        ref="musicList"
+        :list="list"
+        @selectMusic="selectMusic"
       />
-    </div>
-    <music-list
-      ref="musicList"
-      :list="list"
-      :list-type="2"
-      @selectMusic="selectMusic"
-    />
+    </a-spin>
   </div>
 </template>
 
@@ -39,21 +40,25 @@ export default {
       Artists: [], // 热搜数组
       list: [], // 搜索数组
       page: 0, // 分页
-      lockUp: true // 是否锁定上拉加载事件,默认锁定
+      lockUp: true, // 是否锁定上拉加载事件,默认锁定
+      spinning: false
     }
   },
-  created() {
+  activated() {
+    this.spinning = true;
     // 获取热搜
     searchHot().then(res => {
       if (res.data.code === 200) {
         this.Artists = res.data.result.hots
       }
+      this.spinning = false;
     })
   },
   methods: {
     // 点击热搜
     clickHot(name) {
       this.searchValue = name
+      this.spinning = true;
       this.onEnter()
     },
     // 搜索事件
@@ -62,24 +67,13 @@ export default {
         this.$mmToast('搜索内容不能为空！')
         return
       }
+      this.spinning = true;
       this.page = 0
       search(this.searchValue).then(res => {
         if (res.data.code === 200) {
           this.list = formatSongs(res.data.result.songs)
         }
-      })
-    },
-    // 滚动加载事件
-    pullUpLoad() {
-      this.page += 1
-      search(this.searchValue, this.page).then(res => {
-        if (res.data.code === 200) {
-          if (!res.data.result.songs) {
-            this.$mmToast('没有更多歌曲啦！')
-            return
-          }
-          this.list = [...this.list, ...formatSongs(res.data.result.songs)]
-        }
+        this.spinning = false;
       })
     },
     // 播放歌曲
@@ -117,7 +111,6 @@ export default {
   width: 1500px;
   margin: 0 auto;
   height: 100%;
-  overflow: hidden;
   .search-head {
     display: flex;
     height: 60px;

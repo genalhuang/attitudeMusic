@@ -1,17 +1,19 @@
 <template>
   <!--排行榜-->
   <div class="topList">
-    <div class="topList-content">
-      <div
-        v-for="(list, i) in topList.list"
-        :key="i"
-        class="topList-music"
-        @click="toTopListDetail(list.id)"
-      >
-        <img draggable="false" :src="list.coverImgUrl" alt class="img" />
-        <div class="text">{{ list.name }}</div>
+    <a-spin :spinning='spinning'>
+      <div class="topList-content">
+        <div
+          v-for="(list, i) in topList.list"
+          :key="i"
+          class="topList-music"
+          @click="toTopListDetail(list.id)"
+        >
+          <img draggable="false" :src="list.coverImgUrl" alt class="img" />
+          <div class="text">{{ list.name }}</div>
+        </div>
       </div>
-    </div>
+    </a-spin>
   </div>
 </template>
 
@@ -22,19 +24,24 @@ export default {
   components: {},
   data() {
     return {
-      topList: []
+      topList: [],
+      spinning: false
     };
   },
-  created() {
+  activated() {
     this.getTopList();
   },
   methods: {
     async getTopList() {
+      this.spinning = true;
       const data = await getToplistDetail();
       if (data.data.code === 200) {
         this.topList = data.data;
+      } else {
+        this.$message.error('网络错误')
       }
       console.log(this.topList);
+      this.spinning = false;
     },
     async toTopListDetail(id) {
       this.$router.push({ path: `/music/details/${id}` });

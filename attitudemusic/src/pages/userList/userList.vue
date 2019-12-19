@@ -1,17 +1,19 @@
 <template>
   <!--我的歌单-->
   <div class="userList">
-    <div class="userList-content">
-      <div
-        v-for="(list, i) in dataList"
-        :key="i"
-        class="userList-music"
-        @click="toTopListDetail(list.id)"
-      >
-        <img draggable="false" :src="list.coverImgUrl" alt class="img" />
-        <div class="text">{{ list.name }}</div>
+    <a-spin :spinning="spinning">
+      <div class="userList-content">
+        <div
+          v-for="(list, i) in dataList"
+          :key="i"
+          class="userList-music"
+          @click="toTopListDetail(list.id)"
+        >
+          <img draggable="false" :src="list.coverImgUrl" alt class="img" />
+          <div class="text">{{ list.name }}</div>
+        </div>
       </div>
-    </div>
+    </a-spin>
   </div>
 </template>
 <script>
@@ -24,9 +26,11 @@ export default {
     return {
       dataList: [],
       idList: [],
+      spinning: false
     };
   },
   activated() {
+    this.spinning = true;
     this.favoriteList();
   },
   methods: {
@@ -45,14 +49,20 @@ export default {
       let favorites = []
       // 根据最新的id数组获取列表数据
       if(this.idList.length !== 0) {
+        let success = 0;
         this.idList.filter( async( item ) => {
           const data = await getPlaylistDetail(item);
+          success += 1
+          if(success === this.idList.length) {
+            this.spinning = false;
+          }
           if (data.data.code === 200) {
             favorites.push(data.data.playlist)  
           } else {
             this.$message.error('网络错误!')
           }
         })
+
       }
       this.dataList = favorites;
     },

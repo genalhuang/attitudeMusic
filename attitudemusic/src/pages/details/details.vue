@@ -1,21 +1,25 @@
 <template>
   <!--歌单详情-->
   <div class="details">
-    <div class="details-content">
-      <div class="details-left">
-        <img class='detials-img' :src="playlist.coverImgUrl" alt />
-      </div>
-      <div class="details-right">
-        <div class="details-text title">{{playlist.name}}</div>
-        <div class="details-text">{{playlist.description}}</div>
-        <div class="details-text">创建时间 : {{playlist.createTime | formatDate}}</div>
-        <div class="details-img" @click='changekLike'>
-          <img v-if='like' src="@/assets/img/like.png" alt="">
-          <img v-if='!like' src="@/assets/img/unlike.png" alt="">
+    <a-spin :spinning='spinning'>
+      <div class="details-content">
+        <div class="details-left">
+          <img class='detials-img' :src="playlist.coverImgUrl" alt />
+        </div>
+        <div class="details-right">
+          <div class="details-text title">{{playlist.name}}</div>
+          <div class="details-text">{{playlist.description}}</div>
+          <div class="details-text">创建时间 : {{playlist.createTime | formatDate}}</div>
+          <div class="details-img" @click='changekLike'>
+            <img v-if='like' src="@/assets/img/like.png" alt="">
+            <img v-if='!like' src="@/assets/img/unlike.png" alt="">
+          </div>
         </div>
       </div>
-    </div>
-    <music-list class='music-list' :list="list" @selectMusic="selectMusic" />
+      <div class='details-list'>
+        <music-list class='music-list scrollTop' :list="list" @selectMusic="selectMusic" />
+      </div>
+    </a-spin>
   </div>
 </template>
 
@@ -44,10 +48,12 @@ export default {
       playlist: {},
       like: false,
       listId: 0,
-      favoriteList: []
+      favoriteList: [],
+      spinning: false
     };
   },
   activated() {
+    this.spinning = true;
     this.favoriteList = this.$store.state.user.favoriteList;
     this.listId = parseInt(this.$route.params.id, 10)
     // 获取歌单详情
@@ -56,7 +62,9 @@ export default {
         this.playlist = res.data.playlist;
         this.list = formatTopSongs(this.playlist.tracks);
         document.title = `${this.playlist.name} - ATM`;
+
       }
+      this.spinning = false;
     });
     if (this.$store.state.user.favoriteList.length === 0) {
       this.like = false
@@ -67,6 +75,11 @@ export default {
         this.like = false;
       }
     }
+  },
+  mounted() {
+    // document.getElementsByClassName('scrollTop')[0].scrollTop=0;
+    // document.getElementsByClassName('music-content')[0].scrollTop=0;
+    console.log(document.getElementsByClassName('scrollTop')[0])
   },
   methods: {
     selectMusic(data) {
@@ -110,15 +123,16 @@ export default {
   position: relative;
   width: 1500px;
   margin: 0 auto;
-  height: 100%;
+  height: 70vh;
   .details-content {
     margin: 20px;
+    height: 15vh;
     display: flex;
     align-items: top;
     .details-left {
       .detials-img {
-        width: 200px;
-        height: 200px;
+        width: 10vh;
+        height: 10vh;
         border-radius: 10px;
       }
     }
@@ -143,10 +157,11 @@ export default {
         font-size: 40px;
       }
     }
-    
-
   }
-  .music-list {
+  .details-list {
+    width: 100%;
+    height: 55vh;
+    overflow: auto;
   }
 }
 </style>
