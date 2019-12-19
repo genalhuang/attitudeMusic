@@ -18,7 +18,7 @@ app.all('*', function (req, res, next) {
 });
  
  // 连接数据库
-mongoose()
+mongoose();
 
 app.use(router)
 app.listen('4000', function () {

@@ -70,22 +70,24 @@ router.post('/favoriteList', function (req, res) {
     username: req.body.params.username,
     password: req.body.params.password
   };
+
   User.findOne(postData, function (err, data) {
     if (err) throw err;
+    console.log(data.favoriteList, 'favoriteList')
+    console.log(listId, 'listId')
     if(data.favoriteList.length === 0) {
       data.favoriteList.push(listId)
     } else {
       let index = data.favoriteList.indexOf(listId)
-      if( index === -1) {
+      if ( index === -1) {
         data.favoriteList.push(listId)
-      } else {
-        data.favoriteList.splice(index, index + 1)
+      } else if( index !== -1) { 
+        var c = data.favoriteList.splice(index, 1)
       }
     }
     User.update(postData, data, function (err, data2) {
       if (err) throw err;
       if (data2) {
-        console.log(data.favoriteList)
         res.end(JSON.stringify(data))
       } else {
         res.send('更新歌单失败!');
@@ -97,7 +99,6 @@ router.post('/favoriteList', function (req, res) {
 
 // 查询收藏列表 
 router.get('/favoriteList', function (req, res) {
-  console.log(req.query)
   const postData = {
     username: req.query.username,
     password: req.query.password
