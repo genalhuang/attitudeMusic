@@ -63,7 +63,7 @@ router.get('/clearUserList', function (req, res) {
   })
 })
 
-// 更新用户信息 
+// 更新收藏列表
 router.post('/favoriteList', function (req, res) {
   const listId = req.body.params.listId
   const postData = {
@@ -99,6 +99,52 @@ router.post('/favoriteList', function (req, res) {
 
 // 查询收藏列表 
 router.get('/favoriteList', function (req, res) {
+  const postData = {
+    username: req.query.username,
+    password: req.query.password
+  };
+
+  User.findOne(postData, function (err, data) {
+    if (err) throw err;
+    res.end(JSON.stringify(data));
+  });
+
+})
+
+// 更新收藏音乐
+router.post('/favoriteSong', function (req, res) {
+  const songId = req.body.params.songId
+  const postData = {
+    username: req.body.params.username,
+    password: req.body.params.password
+  };
+
+  User.findOne(postData, function (err, data) {
+    if (err) throw err;
+    if(data.favoriteSong.length === 0) {
+      data.favoriteSong.push(songId)
+    } else {
+      let index = data.favoriteSong.indexOf(songId)
+      if ( index === -1) {
+        data.favoriteSong.push(songId)
+      } else if( index !== -1) { 
+        var c = data.favoriteSong.splice(index, 1)
+      }
+    }
+    User.update(postData, data, function (err, data2) {
+      if (err) throw err;
+      if (data2) {
+        res.end(JSON.stringify(data))
+      } else {
+        res.send('更新歌单失败!');
+      }
+    })
+  });
+
+})
+
+// 查询收藏音乐 
+router.get('/favoriteSong', function (req, res) {
   const postData = {
     username: req.query.username,
     password: req.query.password
