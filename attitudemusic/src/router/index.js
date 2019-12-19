@@ -1,5 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import miusic from 'pages/music'
+import playlist from 'pages/playList/playList'
+import userlist from 'pages/userList/userList'
+import toplist from 'pages/topList/topList'
+import details from 'pages/details/details'
+import historyList from 'pages/historyList/historyList'
+import search from 'pages/search/search'
+import comment from 'pages/comment/comment'
 Vue.use(Router)
 
 const routes = [
@@ -9,19 +17,19 @@ const routes = [
   },
   {
     path: '/music',
-    component: () => import('pages/music'),
+    component: miusic,
     redirect: '/music/playlist',
     children: [
       {
         path: '/music/playlist', // 正在播放列表
-        component: () => import('pages/playList/playList'),
+        component: playlist,
         meta: {
           keepAlive: true
         }
       },
       {
         path: '/music/userlist', // 我的歌单
-        component: () => import('pages/userList/userList'),
+        component: userlist,
         meta: {
           title: '我的歌单',
           keepAlive: true
@@ -29,7 +37,7 @@ const routes = [
       },
       {
         path: '/music/toplist', // 排行榜列表
-        component: () => import('pages/topList/topList'),
+        component: toplist,
         meta: {
           title: '排行榜',
           keepAlive: true
@@ -37,18 +45,22 @@ const routes = [
       },
       {
         path: '/music/details/:id', // 音乐详情列表
-        component: () => import('pages/details/details')
+        component: details,
+        meta: {
+          title: '歌单详情',
+          keepAlive: false
+        }
       },
       {
         path: '/music/historylist', // 我听过的列表
-        component: () => import('pages/historyList/historyList'),
+        component: historyList,
         meta: {
           title: '我听过的'
         }
       },
       {
         path: '/music/search', // 搜索
-        component: () => import('pages/search/search'),
+        component: search,
         meta: {
           title: '搜索',
           keepAlive: true
@@ -56,7 +68,7 @@ const routes = [
       },
       {
         path: '/music/comment/:id', // 音乐评论
-        component: () => import('pages/comment/comment'),
+        component: comment,
         meta: {
           title: '评论详情'
         }
