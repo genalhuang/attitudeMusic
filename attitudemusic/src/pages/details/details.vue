@@ -128,7 +128,7 @@ export default {
     margin: 20px;
     height: 15vh;
     display: flex;
-    align-items: top;
+    align-items: center;
     .details-left {
       .detials-img {
         width: 10vh;
@@ -141,7 +141,7 @@ export default {
       flex: 1;
       text-align: left;
       .details-text {
-        font-size: @font_size_large_x;
+        font-size: @font_size_large;
         font-weight: bold;
         margin-top: 20px;
       }
@@ -150,11 +150,12 @@ export default {
         right: 20px;
         top: 20px;
         > img {
-          width: 60px;
+          width: 40px;
         }
       }
       .details-text.title {
-        font-size: 40px;
+        font-size: 25px;
+        margin-top: 0;
       }
     }
   }

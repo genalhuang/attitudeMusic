@@ -16,11 +16,13 @@
           @keyup.enter="onEnter"
         />
       </div>
-      <music-list
-        ref="musicList"
-        :list="list"
-        @selectMusic="selectMusic"
-      />
+      <div class='search-content'>
+        <music-list
+          ref="musicList"
+          :list="list"
+          @selectMusic="selectMusic"
+        />
+      </div>
     </a-spin>
   </div>
 </template>
@@ -110,10 +112,14 @@ export default {
   position: relative;
   width: 1500px;
   margin: 0 auto;
-  height: 100%;
+  height: 80vh;
+  .search-content {
+    height: 75vh;
+    overflow: hidden;
+  }
   .search-head {
     display: flex;
-    height: 60px;
+    height: 5vh;
     padding: 10px 15px;
     overflow: hidden;
     background: @search_bg_coloe;
