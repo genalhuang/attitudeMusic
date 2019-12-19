@@ -107,9 +107,11 @@ export default {
         listId: this.playlist.id
       }
       const data = await postFavoriteList(params)
-      if(typeof data === 'object') {
+      if(typeof data.data === 'object') {
         this.$message.success('歌单更新成功')
+        this.$store.commit('setUserInfo', data.data);
         this.like = !this.like;
+        console.log(data)
       } else {
         this.$message.error(data.data)
       }
