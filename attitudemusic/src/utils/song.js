@@ -44,6 +44,7 @@ export function createTopList (music) {
 
 // 歌曲数据格式化
 const formatSongs = function formatPlayList (list) {
+  console.log(list)
   let Songs = []
   list.forEach(item => {
     const musicData = item

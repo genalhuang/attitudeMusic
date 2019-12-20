@@ -10,17 +10,17 @@
         <span class="list-album">专辑</span>
       </div>
       <div ref="listContent" class="list-content">
-        <div v-for="(item,index) in list" :key="item.id" class="list-item">
+        <div v-for="(item,index) in myList" :key="index" class="list-item">
           <span class="list-num" v-text="index+1" />
           <div class="list-name" @click="clickMusic(item)">
             <span>{{ item.name }}</span>
           </div>
-          <div class="list-num" @click='_postFavoriteSong(index)'>     
+          <div class="list-num" @click='_postFavoriteSong(index)'>  
             <img v-if='item.like' class='musicList-img' src="@/assets/img/like.png" alt="">
             <img v-if='!item.like' class='musicList-img' src="@/assets/img/unlike.png" alt="">
           </div>
-          <span class="list-artist">{{ item.singer }}</span>
-          <span class="list-time">{{ (item.duration % 3600) | format }}</span>
+          <span class="list-artist">{{ item.singer || item.ar[0].name }}</span>
+          <span class="list-time" v-if='item.duration'>{{ (item.duration % 3600) | format }}</span>
           <span class="list-album">{{ item.album }}</span>
         </div>
       </div>
@@ -42,14 +42,16 @@ export default {
   },
   data() {
     return {
-      idList:[]
+      idList:[],
+      myList: this.list
     }
   },
   filters: {
     // 时间格式化
     format
   },
-  created() {
+  activated() {
+    console.log(this.list)
     this._getFavoriteSong()
   },
   methods: {
@@ -69,8 +71,9 @@ export default {
           this.idList = data.data.favoriteSong;
           this.$store.commit('setUserInfo', data.data);
           this.list.filter((item) => {
-            if (this.idList.indexOf(item.id)) {
-              item.like = true;
+            if (this.idList.indexOf(item.id) !== -1) {
+              this.$set(item,'like', true);
+              console.log(item.name)
             } else {
               item.like = false;
             }
@@ -79,10 +82,10 @@ export default {
       } else {
         this.$message.error('请先登录!')
       }
-      console.log(this.idList)
+      this.myList = this.list;
     },
     async _postFavoriteSong(index) {
-      const song = this.list[index];
+      const song = this.myList[index];
       const params = {
         ...this.$store.state.user,
         songId: song.id
@@ -91,12 +94,11 @@ export default {
       if(typeof data === 'object') {
         this.$message.success('歌单更新成功')
         song.like = !song.like
-        this.$set(this.list,index, song)
+        this.$set(this.myList,index, song)
       } else {
         this.$message.error(data.data)
       }
-      console.log(song)
-    } 
+    }
   }
 };
 </script>

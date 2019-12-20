@@ -40,7 +40,6 @@ export default {
       } else {
         this.$message.error('网络错误')
       }
-      console.log(this.topList);
       this.spinning = false;
     },
     async toTopListDetail(id) {
