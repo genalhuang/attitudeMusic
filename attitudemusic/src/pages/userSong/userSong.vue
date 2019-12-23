@@ -4,6 +4,7 @@
     <a-spin :spinning="spinning">
       <div class="usrSong-content">
         <music-list
+          class='musicList'
           ref="musicList"
           :list="dataList"
           @selectMusic="selectMusic"
@@ -36,6 +37,7 @@ export default {
   methods: {
     async favoriteSong() {
       // 请求获取最新喜欢音乐id数组
+      this.dataList = [];
       if(this.$store.state.user.username) {
         const user = this.$store.state.user
         const data = await getFavoriteSong(user)
@@ -43,13 +45,12 @@ export default {
           this.idList = data.data.favoriteSong;
           this.idList.filter(async (item) => {
             const data = await getMusicDetail(item)
+            data.data.songs[0].like = true;
             this.dataList.push(data.data.songs[0])
           })
           this.spinning = false;
         }
-        setInterval(() => {
-         this.dataList = formatSongs(this.dataList)
-        },5000)
+        this.dataList = formatSongs(this.dataList)
 
       } else {
         this.$message.error('请先登录!')
@@ -98,6 +99,9 @@ export default {
     }
     .usrSong-music:hover {
       color: @attitude_color;
+    }
+    .musicList {
+      height: 70vh;
     }
   }
 }

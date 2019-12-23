@@ -10,7 +10,7 @@
         <span class="list-album">专辑</span>
       </div>
       <div ref="listContent" class="list-content">
-        <div v-for="(item,index) in myList" :key="index" class="list-item">
+        <div v-for="(item,index) in list" :key="index" class="list-item">
           <span class="list-num" v-text="index+1" />
           <div class="list-name" @click="clickMusic(item)">
             <span>{{ item.name }}</span>
@@ -38,6 +38,11 @@ export default {
     list: {
       type: Array,
       default: () => []
+    }
+  },
+  watch: {
+    list: function (val) {
+      this.myList = val
     }
   },
   data() {
@@ -73,7 +78,6 @@ export default {
           this.list.filter((item) => {
             if (this.idList.indexOf(item.id) !== -1) {
               this.$set(item,'like', true);
-              console.log(item.name)
             } else {
               item.like = false;
             }
