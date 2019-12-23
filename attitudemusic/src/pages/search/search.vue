@@ -3,11 +3,6 @@
   <div class="search">
     <a-spin :spinning='spinning'>
       <div class="search-head">
-        <span
-          v-for="(item,index) in Artists.slice(0,5)"
-          :key="index"
-          @click="clickHot(item.first)"
-        >{{ item.first }}</span>
         <input
           v-model.trim="searchValue"
           class="search-input"
@@ -15,6 +10,13 @@
           placeholder="音乐/歌手"
           @keyup.enter="onEnter"
         />
+        <template
+          v-for="(item,index) in Artists.slice(0,5)"
+          
+          @click="clickHot(item.first)"
+        >      
+          <a-tag :key="index" @click="clickHot(item.first)" class='search-tag'>{{item.first}}</a-tag>
+        </template>
       </div>
       <div class='search-content'>
         <music-list
@@ -119,36 +121,34 @@ export default {
   }
   .search-head {
     display: flex;
-    height: 5vh;
+    height: 80px;
     padding: 10px 15px;
     overflow: hidden;
-    background: @search_bg_coloe;
-    span {
+    .search-tag {
       line-height: 40px;
-      margin-right: 15px;
+      margin-left: 15px;
+      height: 40px;
+      background-color: #C9665C;
       cursor: pointer;
       &:hover {
         color: @attitude_color;
-      }
-      @media (max-width: 640px) {
-        & {
-          display: none;
-        }
+        background-color: #fff;
       }
     }
     .search-input {
       flex: 1;
       height: 40px;
+      border-radius: 5px;
       box-sizing: border-box;
       padding: 0 15px;
-      border: 1px solid @btn_color;
+      border: 1px solid #999;
       outline: 0;
       background: transparent;
-      color: @text_color_active;
+      color: #555;
       font-size: @font_size_medium;
       box-shadow: 0 0 1px 0 #fff inset;
       &::placeholder {
-        color: @text_color;
+        color: #999;
       }
     }
   }
