@@ -1,19 +1,24 @@
 <template>
   <!--我的歌单-->
   <div class="userList">
-    <a-spin :spinning="spinning">
-      <div class="userList-content">
-        <div
-          v-for="(list, i) in dataList"
-          :key="i"
-          class="userList-music"
-          @click="toTopListDetail(list.id)"
-        >
-          <img draggable="false" :src="list.coverImgUrl" alt class="img" />
-          <div class="text">{{ list.name }}</div>
+    <template v-if='dataList.length'>
+      <a-spin :spinning="spinning">
+        <div class="userList-content">
+          <div
+            v-for="(list, i) in dataList"
+            :key="i"
+            class="userList-music"
+            @click="toTopListDetail(list.id)"
+          >
+            <img draggable="false" :src="list.coverImgUrl" alt class="img" />
+            <div class="text">{{ list.name }}</div>
+          </div>
         </div>
-      </div>
-    </a-spin>
+      </a-spin>
+    </template>
+    <template v-else>
+      <div class='userList-null'>暂无收藏歌单</div>
+    </template>
   </div>
 </template>
 <script>
@@ -77,6 +82,9 @@ export default {
   width: 1500px;
   margin: 0 auto;
   overflow: auto;
+  .userList-null {
+    margin-top: 10px;
+  }
   .userList-content {
     width: 1000px;
     margin: 0 auto;

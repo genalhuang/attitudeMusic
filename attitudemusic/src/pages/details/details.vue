@@ -111,7 +111,6 @@ export default {
         this.$message.success('歌单更新成功')
         this.$store.commit('setUserInfo', data.data);
         this.like = !this.like;
-        console.log(data)
       } else {
         this.$message.error(data.data)
       }

@@ -15,9 +15,8 @@
 </template>
 <script>
 import { getFavoriteSong } from "api/favorite";
-import { getMusicDetail } from 'api'
+import { getMusicDetail, getMusicUrl } from 'api'
 import MusicList from "components/music-list/music-list.vue";
-import formatSongs from '@/utils/song'
 export default {
   name: "userSong",
   components: {
@@ -33,11 +32,12 @@ export default {
   activated() {
     this.spinning = true;
     this.favoriteSong();
+    console.log(this.dataList.length)
   },
   methods: {
     async favoriteSong() {
       // 请求获取最新喜欢音乐id数组
-      this.dataList = [];
+      let array = [];
       if(this.$store.state.user.username) {
         const user = this.$store.state.user
         const data = await getFavoriteSong(user)
@@ -45,13 +45,14 @@ export default {
           this.idList = data.data.favoriteSong;
           this.idList.filter(async (item) => {
             const data = await getMusicDetail(item)
+            const data2 = await getMusicUrl(item)
             data.data.songs[0].like = true;
-            this.dataList.push(data.data.songs[0])
+            data.data.songs[0].url = data2.data.data[0].url;
+            array.push(data.data.songs[0])
+            this.dataList = array
           })
           this.spinning = false;
         }
-        this.dataList = formatSongs(this.dataList)
-
       } else {
         this.$message.error('请先登录!')
       }
@@ -77,6 +78,9 @@ export default {
 .usrSong {
   width: 1500px;
   margin: 0 auto;
+  .userSong-null {
+    margin-top: 10px;
+  }
   .usrSong-content {
     width: 1500px;
     margin: 0 auto;

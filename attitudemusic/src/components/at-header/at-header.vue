@@ -29,6 +29,7 @@
 
 <script>
 import { accountRegister, accountLogin } from 'api/account'
+import Cookie from 'js-cookie'
 export default {
   name: 'Music',
   components: {
@@ -41,6 +42,15 @@ export default {
       isAccount: false,
       type: ''
     }
+  },
+  mounted() {
+    setTimeout(() => {
+    this.username = this.$store.state.user.username
+    if(this.username) {
+      this.isAccount = true;
+    }
+    },10)
+
   },
   methods: {
     register() {
@@ -68,6 +78,7 @@ export default {
         this.$message.success(data.data.username + ', 欢迎登录！')
         this.username = data.data.username
         this.$store.commit('setUserInfo', data.data);
+        Cookie.set('userInfo',data.data);
         this.$router.push({ path: '/'});
       } else {
         this.$message.error(data.data)
@@ -75,6 +86,8 @@ export default {
     },
     out() {
       this.$message.success('退出成功');
+      this.$store.commit('setUserInfo', '');
+      Cookie.set('userInfo','');
       this.isAccount = false;
       this.$router.push({ path: '/'});
     }

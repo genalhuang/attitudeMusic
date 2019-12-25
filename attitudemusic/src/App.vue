@@ -6,9 +6,13 @@
 </template>
 <script>
 import AtHeader from "components/at-header/at-header.vue";
+import { saveUserInfo } from 'utils/userinfo.js'
 export default {
   components: {
     AtHeader
+  },
+  created() {
+    saveUserInfo()
   },
   mounted() {
     window.onbeforeunload = () => {      //刷新时弹出提示

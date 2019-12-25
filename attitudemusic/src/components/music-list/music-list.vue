@@ -56,7 +56,6 @@ export default {
     format
   },
   activated() {
-    console.log(this.list)
     this._getFavoriteSong()
   },
   methods: {
@@ -77,9 +76,10 @@ export default {
           this.$store.commit('setUserInfo', data.data);
           this.list.filter((item) => {
             if (this.idList.indexOf(item.id) !== -1) {
+              console.log('yes')
               this.$set(item,'like', true);
             } else {
-              item.like = false;
+              this.$set(item,'like', false);
             }
           })
         }
@@ -111,6 +111,9 @@ export default {
 .musicList {
   width: 1500px;
   margin: 0 auto;
+  .musicList-null {
+    margin-top: 10px;
+  }
 }
 .list-header {
   margin-top: 1px solid #fff;
