@@ -32,12 +32,11 @@ export default {
   activated() {
     this.spinning = true;
     this.favoriteSong();
-    console.log(this.dataList.length)
   },
   methods: {
     async favoriteSong() {
       // 请求获取最新喜欢音乐id数组
-      let array = [];
+      this.dataList = [];
       if(this.$store.state.user.username) {
         const user = this.$store.state.user
         const data = await getFavoriteSong(user)
@@ -48,8 +47,7 @@ export default {
             const data2 = await getMusicUrl(item)
             data.data.songs[0].like = true;
             data.data.songs[0].url = data2.data.data[0].url;
-            array.push(data.data.songs[0])
-            this.dataList = array
+            this.dataList.push(data.data.songs[0])
           })
           this.spinning = false;
         }
