@@ -59,10 +59,15 @@ export default {
   },
   computed: {
     lyricTop () {
-      return `transform :translate3d(0, ${-34 * (this.lyricIndex - 5)}px, 0)`
+      return `transform :translate3d(0, ${-34 * (this.lyricIndex + this.top)}px, 0)`
     }
   },
   mounted () {
+    window.addEventListener('resize', () => {
+      clearTimeout(this.resizeTimer)
+      this.resizeTimer = setTimeout(() => this.clacTop(), 60)
+    })
+    this.$nextTick(() => this.clacTop())
   },
   methods: {
     computedLyricIndex () {
@@ -76,6 +81,17 @@ export default {
           this.lyricIndex = time
         }
       }, 1000)
+    },
+    // 计算歌词居中的 top值
+    clacTop() {
+      const dom = this.$refs.musicLyric
+      const { display = '' } = window.getComputedStyle(dom)
+      if (display === 'none') {
+        return
+      }
+      const height = dom.offsetHeight
+      this.top = Math.floor(height / 34 / 2)
+      console.log(this.top)
     }
   }
 }
