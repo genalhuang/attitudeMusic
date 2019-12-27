@@ -33,6 +33,7 @@
 import { search, searchHot, getMusicDetail } from 'api'
 import MusicList from 'components/music-list/music-list'
 import formatSongs from '@/utils/song'
+import { getFavoriteSong } from "api/favorite";
 export default {
   name: "Search",
   components: {
@@ -45,7 +46,8 @@ export default {
       list: [], // 搜索数组
       page: 0, // 分页
       lockUp: true, // 是否锁定上拉加载事件,默认锁定
-      spinning: false
+      spinning: false,
+      idList: []
     }
   },
   activated() {
@@ -76,6 +78,8 @@ export default {
       search(this.searchValue).then(res => {
         if (res.data.code === 200) {
           this.list = formatSongs(res.data.result.songs)
+          // 判断是否为喜欢的音乐
+          this.favoriteSong()
         }
         this.spinning = false;
       })
@@ -104,7 +108,30 @@ export default {
       }) === -1) {
         this.$store.commit('setHistoryList', data);
       }
-    }
+    },
+    async favoriteSong() {
+      this.spinning = true;
+      // 请求获取最新喜欢音乐id数组
+      if(this.$store.state.user.username) {
+        const user = this.$store.state.user
+        const data = await getFavoriteSong(user)
+        if(typeof data.data === 'object') {
+          this.idList = data.data.favoriteSong;
+          this.list = this.list.filter((item) => {
+            this.idList.filter((i) => {
+              if(i === item.id) {
+                item.like = true;
+                this.$set(item,'like', true)
+              }
+            })
+            return item;
+          })
+          this.spinning = false;
+        }
+      } else {
+        this.$message.error('请先登录!')
+      }
+    },
   }
 };
 </script>

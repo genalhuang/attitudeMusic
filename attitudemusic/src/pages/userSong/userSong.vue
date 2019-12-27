@@ -15,8 +15,9 @@
 </template>
 <script>
 import { getFavoriteSong } from "api/favorite";
-import { getMusicDetail, getMusicUrl } from 'api'
+import { getMusicDetail } from 'api'
 import MusicList from "components/music-list/music-list.vue";
+import { formatTopSongs } from "@/utils/song";
 export default {
   name: "userSong",
   components: {
@@ -29,12 +30,12 @@ export default {
       spinning: false
     };
   },
-  activated() {
-    this.spinning = true;
+  async activated() {
     this.favoriteSong();
   },
   methods: {
     async favoriteSong() {
+      this.spinning = true;
       // 请求获取最新喜欢音乐id数组
       this.dataList = [];
       if(this.$store.state.user.username) {
@@ -44,10 +45,11 @@ export default {
           this.idList = data.data.favoriteSong;
           this.idList.filter(async (item) => {
             const data = await getMusicDetail(item)
-            const data2 = await getMusicUrl(item)
             data.data.songs[0].like = true;
-            data.data.songs[0].url = data2.data.data[0].url;
             this.dataList.push(data.data.songs[0])
+            if(this.dataList.length === this.idList.length) {
+               this.dataList = formatTopSongs(this.dataList)
+            }
           })
           this.spinning = false;
         }

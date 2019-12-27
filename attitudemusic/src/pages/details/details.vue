@@ -29,6 +29,7 @@ import { formatTopSongs } from "@/utils/song";
 import { format, formatDate } from "@/utils/util";
 import MusicList from "components/music-list/music-list.vue";
 import { postFavoriteList } from 'api/favorite';
+import { getFavoriteSong } from 'api/favorite';
 export default {
   name: "Detail",
   components: {
@@ -60,9 +61,11 @@ export default {
     getPlaylistDetail(this.$route.params.id).then(res => {
       if (res.data.code === 200) {
         this.playlist = res.data.playlist;
+        console.log(this.playlist.tracks)
         this.list = formatTopSongs(this.playlist.tracks);
         document.title = `${this.playlist.name} - ATM`;
-
+        // 获取并处理歌单歌曲
+        this._getFavoriteSong()
       }
       this.spinning = false;
     });
@@ -77,9 +80,6 @@ export default {
     }
   },
   mounted() {
-    // document.getElementsByClassName('scrollTop')[0].scrollTop=0;
-    // document.getElementsByClassName('music-content')[0].scrollTop=0;
-    console.log(document.getElementsByClassName('scrollTop')[0])
   },
   methods: {
     selectMusic(data) {
@@ -96,7 +96,6 @@ export default {
         this.$store.commit("setHistoryList", data);
       }
     },
-
     async changekLike() {
       if(!this.$store.state.user.username) {
         this.$message.error('请先登录账号');
@@ -114,7 +113,27 @@ export default {
       } else {
         this.$message.error(data.data)
       }
-    }
+    },
+    async _getFavoriteSong() {
+      // 请求获取最新收藏id数组
+      if(this.$store.state.user.username) {
+        const user = this.$store.state.user
+        const data = await getFavoriteSong(user)
+        if(typeof data.data === 'object') {
+          this.idList = data.data.favoriteSong;
+          this.$store.commit('setUserInfo', data.data);
+          this.list.filter((item) => {
+            if (this.idList.indexOf(item.id) !== -1) {
+              this.$set(item,'like', true);
+            } else {
+              this.$set(item,'like', false);
+            }
+          })
+        }
+      } else {
+        this.$message.error('请先登录!')
+      }
+    },
   }
 };
 </script>

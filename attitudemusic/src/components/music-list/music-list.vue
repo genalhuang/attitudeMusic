@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { postFavoriteSong, getFavoriteSong } from 'api/favorite';
+import { postFavoriteSong } from 'api/favorite';
 import { format } from 'utils/util'
 export default {
   name: "MusicList",
@@ -42,7 +42,9 @@ export default {
   },
   watch: {
     list: function (val) {
+      console.log('change')
       this.myList = val
+      this.list = val
     }
   },
   data() {
@@ -55,9 +57,6 @@ export default {
     // 时间格式化
     format
   },
-  activated() {
-    this._getFavoriteSong()
-  },
   methods: {
     clickMusic(item) {
       this.$emit("selectMusic", item);
@@ -65,28 +64,6 @@ export default {
     // 回到顶部
     scrollTo() {
       this.$refs.listContent.scrollTop = 0
-    },
-    async _getFavoriteSong() {
-      // 请求获取最新收藏id数组
-      if(this.$store.state.user.username) {
-        const user = this.$store.state.user
-        const data = await getFavoriteSong(user)
-        if(typeof data.data === 'object') {
-          this.idList = data.data.favoriteSong;
-          this.$store.commit('setUserInfo', data.data);
-          this.list.filter((item) => {
-            if (this.idList.indexOf(item.id) !== -1) {
-              console.log('yes')
-              this.$set(item,'like', true);
-            } else {
-              this.$set(item,'like', false);
-            }
-          })
-        }
-      } else {
-        this.$message.error('请先登录!')
-      }
-      this.myList = this.list;
     },
     async _postFavoriteSong(index) {
       const song = this.myList[index];

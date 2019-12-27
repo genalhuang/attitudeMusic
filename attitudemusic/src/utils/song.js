@@ -7,7 +7,7 @@ function filterSinger (singers) {
 }
 
 export class Song {
-  constructor ({ id, name, singer, album, image, duration, url }) {
+  constructor ({ id, name, singer, album, image, duration, url, like }) {
     this.id = id
     this.name = name
     this.singer = singer
@@ -15,6 +15,7 @@ export class Song {
     this.image = image
     this.duration = duration
     this.url = url
+    this.like = like
   }
 }
 
@@ -38,6 +39,7 @@ export function createTopList (music) {
     album: music.al.name,
     image: music.al.picUrl,
     duration: music.dt / 1000,
+    like: music.like,
     url: `https://music.163.com/song/media/outer/url?id=${music.id}.mp3`
   })
 }
