@@ -90,8 +90,7 @@ export default {
         return
       }
       const height = dom.offsetHeight
-      this.top = Math.floor(height / 34 / 2)
-      console.log(this.top)
+      this.top = Math.floor(height / 180)
     }
   }
 }
