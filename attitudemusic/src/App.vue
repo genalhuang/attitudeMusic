@@ -1,15 +1,15 @@
 <template>
   <div id="atm">
-    <at-header />
+    <atm-header />
     <router-view />
   </div>
 </template>
 <script>
-import AtHeader from "components/at-header/at-header.vue";
+import AtmHeader from "components/atm-header/atm-header.vue";
 import { saveUserInfo } from 'utils/userinfo.js'
 export default {
   components: {
-    AtHeader
+    AtmHeader
   },
   created() {
     saveUserInfo()

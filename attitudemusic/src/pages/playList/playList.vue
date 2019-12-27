@@ -1,15 +1,17 @@
 <template>
   <!--正在播放-->
-  <div class="playList">
-    <div v-if="music" class="playList-left">
-      <img :src="music.image || 'http://p4.music.126.net/4didUTCXHzRrQvaXFEGcYg==/109951164475111588.jpg?param=200y200'" alt="专辑照片" class="playList-img" />
-      <div class="playList-text">{{ music.name }}</div>
-      <div class="playList-text">{{ music.singer }}</div>
-      <div></div>
+  <div class='playList'>
+    <div class="playList-content">
+      <div v-if="music" class="playList-left">
+        <img :src="music.image || 'http://p4.music.126.net/4didUTCXHzRrQvaXFEGcYg==/109951164475111588.jpg?param=200y200'" alt="专辑照片" class="playList-img" />
+        <div class="playList-text">{{ music.name }}</div>
+        <div class="playList-text">{{ music.singer }}</div>
+      </div>
+      <div class="playList-right">
+        <lyrics :lyric="lyric" :nolyric="nolyric" :music="music" :lyricIndex="lyricIndex"/>
+      </div>
     </div>
-    <div class="playList-right">
-      <lyrics :lyric="lyric" :nolyric="nolyric" :music="music" :lyricIndex="lyricIndex"/>
-    </div>
+    <atm-barrage class='playList-comment' :music='music'></atm-barrage>
   </div>
 </template>
 
@@ -17,10 +19,12 @@
 import { getLyric } from "api";
 import { parseLyric } from "@/utils/util";
 import Lyrics from "components/lyrics/lyrics.vue";
+import AtmBarrage from "components/atm-barrage/atm-barrage.vue";
 export default {
   name: "PlayList",
   components: {
-    Lyrics
+    Lyrics,
+    AtmBarrage
   },
   data() {
     return {
@@ -65,31 +69,41 @@ export default {
 
 <style lang="less" scoped>
 .playList {
-  border-bottom: 2px solid #ccc;
-  position: relative;
   width: 100%;
-  overflow: hidden;
-  display: flex;
   height: 100%;
-  .playList-left {
-    width: 50%;
-    .playList-img {
-      height: 260px;
-      width: 260px;
-      border-radius: 130px;
-      margin: 10% 0 10px;
-      animation: poster 20s linear infinite;
-      border: 10px solid #ccc;
+  .playList-content {
+    border-bottom: 2px solid #ccc;
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    height: 100%;
+    .playList-left {
+      width: 50%;
+      .playList-img {
+        height: 260px;
+        width: 260px;
+        border-radius: 130px;
+        margin: 10% 0 10px;
+        animation: poster 20s linear infinite;
+        border: 10px solid #ccc;
+      }
+      .playList-text {
+        font-size: @font_size_large;
+        margin: 25px;
+      }
     }
-    .playList-text {
-      font-size: @font_size_large;
-      margin: 25px;
+    .playList-right {
+      width: 50%;
     }
   }
-  .playList-right {
-    width: 50%;
+  .playList-comment {
+    width: 100%;
+    top: 15vh;
+    position: absolute;
   }
 }
+
 // 动画
 @keyframes poster {
   from {

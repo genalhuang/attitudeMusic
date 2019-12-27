@@ -31,7 +31,7 @@
 import { accountRegister, accountLogin } from 'api/account'
 import Cookie from 'js-cookie'
 export default {
-  name: 'Music',
+  name: 'AtmHdader',
   components: {
   },
   data() {
