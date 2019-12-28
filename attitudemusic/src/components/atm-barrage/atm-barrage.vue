@@ -62,7 +62,7 @@ export default {
       position: relative;
       right: 0;
       .atm-comment {
-        width: 1000px;
+        width: 2000px;
         position: absolute;
         text-align: right;
         animation: myfirst 5s linear infinite;
