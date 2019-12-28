@@ -103,3 +103,14 @@ export function getComment (id, page, limit = defaultLimit) {
     }
   })
 }
+
+// 歌单（网友精选碟）
+export function getTypeList (order, tag, limit = defaultLimit) {
+  return axios.get('/top/playlist', {
+    params: {
+      order: order,
+      limit: limit,
+      cat: tag
+    }
+  })
+}
