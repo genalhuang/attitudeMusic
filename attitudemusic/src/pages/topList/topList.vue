@@ -8,7 +8,7 @@
           <a-tabs v-model='tab' @change='changeType'>
             <a-tab-pane key="华语" color='red'>
               <span slot="tab">
-                <a-icon type="apple" />
+                <a-icon type="smile" />
                 华语
               </span>
               <div
@@ -21,7 +21,7 @@
             </a-tab-pane>
             <a-tab-pane key="流行">
               <span slot="tab">
-                <a-icon type="android" />
+                <a-icon type="smile" />
                 流行
               </span>
               <div
@@ -34,7 +34,7 @@
             </a-tab-pane>
             <a-tab-pane key="摇滚">
               <span slot="tab">
-                <a-icon type="android" />
+                <a-icon type="smile" />
                 摇滚
               </span>
               <div
@@ -47,7 +47,7 @@
             </a-tab-pane>
             <a-tab-pane key="民谣">
               <span slot="tab">
-                <a-icon type="android" />
+                <a-icon type="smile" />
                 民谣
               </span>
               <div
@@ -60,7 +60,7 @@
             </a-tab-pane>
             <a-tab-pane key="怀旧">
               <span slot="tab">
-                <a-icon type="android" />
+                <a-icon type="smile" />
                 怀旧
               </span>
               <div
@@ -73,7 +73,7 @@
             </a-tab-pane>
             <a-tab-pane key="治愈">
               <span slot="tab">
-                <a-icon type="android" />
+                <a-icon type="smile" />
                 治愈
               </span>
               <div
