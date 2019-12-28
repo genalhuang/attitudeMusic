@@ -1,10 +1,9 @@
 <template>
   <div class="atm-barrage">
     <div class="atm-content">
-      <!-- <template v-for='item in commentList'>
-        <div :key='item'>{{item.content}}</div>
-      </template> -->
-      <div class='atm-comment'>{{currentComment}}</div>
+      <div class='atm-comment' v-if='currentComment.length'>
+        <span class='text'>{{currentComment}}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -63,18 +62,30 @@ export default {
       position: relative;
       right: 0;
       .atm-comment {
+        width: 1000px;
         position: absolute;
-        display: flex;
-        flex-wrap: nowrap;
         text-align: right;
         animation: myfirst 5s linear infinite;
+        .text {
+          padding: 5px 10px;
+          min-height: 30px;
+          line-height: 30px;
+          background-color: #C9665C;
+          opacity: .9;
+          border-radius: 15px;
+        }
+        .text:hover {
+          color: #C9665C;
+          background-color: #fff;
+          transition: 1s;
+        }
       }
    }
  }
 @keyframes myfirst
 {
-  0%   {right: -200px;}
-  50%  {right: 800px;}
-  100% {right: 1600px;}
+  0%   {right: -100px;}
+  50%  {right: 500px;}
+  100% {right: 1200px;}
 }
 </style>

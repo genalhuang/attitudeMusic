@@ -128,8 +128,6 @@ export default {
           })
           this.spinning = false;
         }
-      } else {
-        this.$message.error('请先登录!')
       }
     },
   }

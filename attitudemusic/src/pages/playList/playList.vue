@@ -99,7 +99,7 @@ export default {
   }
   .playList-comment {
     width: 100%;
-    top: 15vh;
+    top: 20vh;
     position: absolute;
   }
 }

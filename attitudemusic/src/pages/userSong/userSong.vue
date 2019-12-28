@@ -35,12 +35,13 @@ export default {
   },
   methods: {
     async favoriteSong() {
-      this.spinning = true;
       // 请求获取最新喜欢音乐id数组
       this.dataList = [];
       if(this.$store.state.user.username) {
         const user = this.$store.state.user
+        this.spinning = true;
         const data = await getFavoriteSong(user)
+        this.spinning = false;
         if(typeof data.data === 'object') {
           this.idList = data.data.favoriteSong;
           this.idList.filter(async (item) => {
@@ -51,7 +52,6 @@ export default {
                this.dataList = formatTopSongs(this.dataList)
             }
           })
-          this.spinning = false;
         }
       } else {
         this.$message.error('请先登录!')

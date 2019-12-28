@@ -3,7 +3,7 @@
   <div class="userList">
     <template v-if='dataList.length'>
       <a-spin :spinning="spinning">
-        <div class="userList-content">
+        <div class="userList-content" v-if='this.$store.state.user.username'>
           <div
             v-for="(list, i) in dataList"
             :key="i"
@@ -35,11 +35,12 @@ export default {
     };
   },
   activated() {
-    this.spinning = true;
+    console.log(this.$store.state.user.username,this.$store.state.user.username !== undefined)
     this.favoriteList();
   },
   methods: {
     async favoriteList() {
+      this.spinning = true;
       // 请求获取最新收藏id数组
       if(this.$store.state.user.username) {
         const user = this.$store.state.user

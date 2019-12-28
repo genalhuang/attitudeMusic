@@ -66,19 +66,24 @@ export default {
       this.$refs.listContent.scrollTop = 0
     },
     async _postFavoriteSong(index) {
-      const song = this.myList[index];
-      const params = {
-        ...this.$store.state.user,
-        songId: song.id
-      }
-      const data =  await postFavoriteSong(params)
-      if(typeof data === 'object') {
-        this.$message.success('歌单更新成功')
-        song.like = !song.like
-        this.$set(this.myList,index, song)
+      if(this.$store.state.user.username) {
+        const song = this.myList[index];
+        const params = {
+          ...this.$store.state.user,
+          songId: song.id
+        }
+        const data =  await postFavoriteSong(params)
+        if(typeof data === 'object') {
+          this.$message.success('歌单更新成功')
+          song.like = !song.like
+          this.$set(this.myList,index, song)
+        } else {
+          this.$message.error(data.data)
+        }
       } else {
-        this.$message.error(data.data)
+        this.$message.error('请先登录')
       }
+
     }
   }
 };
