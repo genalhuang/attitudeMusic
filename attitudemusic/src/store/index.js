@@ -17,6 +17,9 @@ export default new Vuex.Store({
     setHistoryList(state, history) {
       state.historyList.unshift(history);
     },
+    removeHistoryList(state) {
+      state.historyList = []
+    },
     setUserInfo(state, user) {
       state.user = user;
     }

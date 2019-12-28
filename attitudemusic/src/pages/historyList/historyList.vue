@@ -7,6 +7,7 @@
       @selectMusic="selectMusic"
     >
     </music-list>
+    <a-button v-show='historyList.length' @click='removeHistory'  type="danger" ghost >清空历史</a-button>
   </div>
 </template>
 
@@ -32,6 +33,10 @@ export default {
       audio.data = data;
       audio.play();
       // this.$refs.atmPlayer.src = data.src
+    },
+    removeHistory() {
+      this.$store.commit("removeHistoryList");
+      this.historyList = this.$store.state.historyList
     }
   }
 };
@@ -44,7 +49,7 @@ export default {
   height: 100%;
   .musicList {
     width: 100%;
-    height: 100%;
+    height: 90%;
     .list-btn {
       display: flex;
       justify-content: center;

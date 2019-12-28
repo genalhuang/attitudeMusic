@@ -87,6 +87,7 @@ export default {
     out() {
       this.$message.success('退出成功');
       this.$store.commit('setUserInfo', '');
+      this.$store.commit("removeHistoryList");
       Cookie.set('userInfo','');
       this.isAccount = false;
       this.$router.push({ path: '/'});
