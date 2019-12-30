@@ -31,6 +31,7 @@ import {
   Switch,
   Popconfirm,
   Breadcrumb,
+  Avatar
 } from 'ant-design-vue';
 
 Vue.use(Menu);
@@ -63,6 +64,7 @@ Vue.use(Dropdown);
 Vue.use(Switch);
 Vue.use(Popconfirm);
 Vue.use(Breadcrumb);
+Vue.use(Avatar);
 
 Vue.prototype.$message = message;
 Vue.prototype.$confirm = Modal.confirm;

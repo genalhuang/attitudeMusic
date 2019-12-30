@@ -2,7 +2,12 @@
   <div class="music">
     <a-dropdown class='music-account'>
       <a class="ant-dropdown-link" href="#" v-if='!isAccount'> 账号管理 <a-icon type="down" /> </a>
-      <a class="ant-dropdown-link" href="#" v-if='isAccount'> 欢迎进入ATM, {{username}} <a-icon type="down" /> </a>
+      <a class="ant-dropdown-link" href="#" v-if='isAccount'> 
+        欢迎进入ATM,         
+        <a-avatar style="color: #f56a00; backgroundColor: #fde3cf">U</a-avatar>
+        {{username}}
+        <a-icon type="down" /> 
+      </a>
       <a-menu slot="overlay">
         <a-menu-item  v-if='!isAccount'>
           <a href="javascript:;" @click='login'>登录</a>

@@ -151,8 +151,8 @@ export default {
     align-items: center;
     .details-left {
       .detials-img {
-        width: 10vh;
-        height: 10vh;
+        width: 15vh;
+        height: 15vh;
         border-radius: 10px;
       }
     }
@@ -163,7 +163,12 @@ export default {
       .details-text {
         font-size: @font_size_large;
         font-weight: bold;
-        margin-top: 20px;
+        margin-top: 20px; 
+        width: 1100px;
+        height: 50px;
+        overflow:hidden; //超出的文本隐藏
+        text-overflow:ellipsis; //溢出用省略号显示
+        white-space:nowrap
       }
       .details-img {
         position: absolute;
@@ -175,7 +180,7 @@ export default {
       }
       .details-text.title {
         font-size: 25px;
-        margin-top: 0;
+        margin-top: 15px;
       }
     }
   }

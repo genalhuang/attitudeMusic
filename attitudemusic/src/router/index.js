@@ -7,8 +7,8 @@ import toplist from 'pages/topList/topList'
 import details from 'pages/details/details'
 import historyList from 'pages/historyList/historyList'
 import search from 'pages/search/search'
-import comment from 'pages/comment/comment'
 import userSong from 'pages/userSong/userSong'
+import artist from 'pages/artist/artist'
 
 Vue.use(Router)
 
@@ -77,10 +77,10 @@ const routes = [
         }
       },
       {
-        path: '/music/comment/:id', // 音乐评论
-        component: comment,
+        path: '/music/artist', // 音乐评论
+        component: artist,
         meta: {
-          title: '评论详情'
+          title: '歌手列表'
         }
       }
     ]

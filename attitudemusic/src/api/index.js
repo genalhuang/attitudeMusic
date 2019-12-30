@@ -114,3 +114,13 @@ export function getTypeList (order, tag, limit = defaultLimit) {
     }
   })
 }
+
+// 歌手分类
+export function getArtistList (cat, limit = defaultLimit) {
+  return axios.get('/artist/list', {
+    params: {
+      cat: cat,
+      limit: limit
+    }
+  })
+}
