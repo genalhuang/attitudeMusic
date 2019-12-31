@@ -4,12 +4,12 @@
     <a-spin :spinning='spinning'>
       <div class="details-content">
         <div class="details-left">
-          <img class='detials-img' :src="playlist.coverImgUrl" alt />
+          <img class='detials-img' :src="playlist.coverImgUrl || playlist.picUrl" alt />
         </div>
         <div class="details-right">
           <div class="details-text title">{{playlist.name}}</div>
-          <div class="details-text">{{playlist.description}}</div>
-          <div class="details-text">创建时间 : {{playlist.createTime | formatDate}}</div>
+          <div class="details-text">{{playlist.description || playlist.briefDesc}}</div>
+          <div class="details-text" v-if='type !== "artist"'>创建时间 : {{playlist.createTime | formatDate}}</div>
           <div class="details-img" @click='changekLike'>
             <img v-if='like' src="@/assets/img/like.png" alt="">
             <img v-if='!like' src="@/assets/img/unlike.png" alt="">
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { getPlaylistDetail } from "api";
+import { getPlaylistDetail, getArtistSong } from "api";
 import { formatTopSongs } from "@/utils/song";
 import { format, formatDate } from "@/utils/util";
 import MusicList from "components/music-list/music-list.vue";
@@ -50,34 +50,43 @@ export default {
       like: false,
       listId: 0,
       favoriteList: [],
-      spinning: false
+      spinning: false,
+      id: '',
+      type:''
     };
   },
   activated() {
-    this.spinning = true;
+    this.id = this.$route.params.id;
+    this.type = this.$route.query.type
     this.favoriteList = this.$store.state.user.favoriteList;
-    this.listId = parseInt(this.$route.params.id, 10)
-    // 获取歌单详情
-    getPlaylistDetail(this.$route.params.id).then(res => {
-      if (res.data.code === 200) {
-        this.playlist = res.data.playlist;
-        console.log(this.playlist.tracks)
-        this.list = formatTopSongs(this.playlist.tracks);
-        document.title = `${this.playlist.name} - ATM`;
-        // 获取并处理歌单歌曲
-        this._getFavoriteSong()
-      }
-      this.spinning = false;
-    });
-    if (this.$store.state.user.favoriteList.length === 0) {
-      this.like = false
+    this.listId = parseInt(this.id, 10)
+    if (this.type === 'artist') {
+      this.getArtist(this.id)
     } else {
-      if (this.$store.state.user.favoriteList.indexOf(this.listId) !== -1) {
-        this.like = true;
+      this.spinning = true;
+      // 获取歌单详情
+      getPlaylistDetail(this.id).then(res => {
+        if (res.data.code === 200) {
+          this.playlist = res.data.playlist;
+          console.log(this.playlist.tracks)
+          this.list = formatTopSongs(this.playlist.tracks);
+          document.title = `${this.playlist.name} - ATM`;
+          // 获取并处理歌单歌曲
+          this._getFavoriteSong()
+        }
+        this.spinning = false;
+      });
+      if (this.$store.state.user.favoriteList.length === 0) {
+        this.like = false
       } else {
-        this.like = false;
+        if (this.$store.state.user.favoriteList.indexOf(this.listId) !== -1) {
+          this.like = true;
+        } else {
+          this.like = false;
+        }
       }
     }
+
   },
   mounted() {
   },
@@ -134,6 +143,20 @@ export default {
         this.$message.error('请先登录!')
       }
     },
+    async getArtist(id) {
+      this.spinning = true;
+      const data = await getArtistSong(id)
+      if (data.data.code === 200) {
+          console.log(data.data.artist)
+          this.playlist = data.data.artist;
+          console.log(this.playlist.tracks)
+          this.list = formatTopSongs(data.data.hotSongs);
+          this._getFavoriteSong()
+      } else {
+        this.$message.error('网络错误')
+      }
+      this.spinning = false;
+    }
   }
 };
 </script>

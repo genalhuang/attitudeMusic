@@ -6,18 +6,6 @@
         <div  class="artists-choiceness">
           <div class='artists-title'>歌手列表</div>
           <a-tabs v-model='tab' @change='changeType'>
-            <a-tab-pane :key="5001" color='red'>
-              <span slot="tab">
-                <a-icon type="smile" />
-                入驻歌手
-              </span>
-              <div class="artists-list">
-                <div class='artists-item' v-for='(item, key) in artistList' :key='key'>
-                  <a-avatar :src="item.picUrl" class='artists-songer'></a-avatar>
-                  <div class='artists-name'>{{item.name}}</div>
-                </div>
-              </div>
-            </a-tab-pane>
             <a-tab-pane :key="1001">
               <span slot="tab">
                 <a-icon type="smile" />
@@ -25,7 +13,7 @@
               </span>
               <div class="artists-list">
                 <div class='artists-item' v-for='(item, key) in artistList' :key='key'>
-                  <a-avatar :src="item.picUrl" class='artists-songer'></a-avatar>
+                  <img :src="item.picUrl" class='artists-songer'  v-if='item.picUrl' @click='toArtist(item.id)'/>
                   <div class='artists-name'>{{item.name}}</div>
                 </div>
               </div>
@@ -37,7 +25,7 @@
               </span>
               <div class="artists-list">
                 <div class='artists-item' v-for='(item, key) in artistList' :key='key'>
-                  <a-avatar :src="item.picUrl" class='artists-songer'></a-avatar>
+                  <img :src="item.picUrl" class='artists-songer'  v-if='item.picUrl' @click='toArtist(item.id)'/>
                   <div class='artists-name'>{{item.name}}</div>
                 </div>
               </div>
@@ -49,7 +37,7 @@
               </span>
               <div class="artists-list">
                 <div class='artists-item' v-for='(item, key) in artistList' :key='key'>
-                  <a-avatar :src="item.picUrl" class='artists-songer'></a-avatar>
+                  <img :src="item.picUrl" class='artists-songer'  v-if='item.picUrl' @click='toArtist(item.id)'/>
                   <div class='artists-name'>{{item.name}}</div>
                 </div>
               </div>
@@ -61,7 +49,7 @@
               </span>
               <div class="artists-list">
                 <div class='artists-item' v-for='(item, key) in artistList' :key='key'>
-                  <a-avatar :src="item.picUrl" class='artists-songer'></a-avatar>
+                  <img :src="item.picUrl" class='artists-songer'  v-if='item.picUrl' @click='toArtist(item.id)'/>
                   <div class='artists-name'>{{item.name}}</div>
                 </div>
               </div>
@@ -73,7 +61,7 @@
               </span>
               <div class="artists-list">
                 <div class='artists-item' v-for='(item, key) in artistList' :key='key'>
-                  <a-avatar :src="item.picUrl" class='artists-songer'></a-avatar>
+                  <img :src="item.picUrl" class='artists-songer'  v-if='item.picUrl' @click='toArtist(item.id)'/>
                   <div class='artists-name'>{{item.name}}</div>
                 </div>
               </div>
@@ -95,16 +83,16 @@ export default {
     return {
       artistList: [],
       spinning: false,
-      tab: 5001
+      tab: 1001
     };
   },
   activated() {
     this.getArtist();
   },
   methods: {
-    async getArtist(val) {
+    async getArtist() {
       this.spinning = true;
-      const data = await getArtistList(val)
+      const data = await getArtistList(this.tab)
       if (data.data.code === 200) {
         this.artistList = data.data.artists;
       } else {
@@ -113,9 +101,11 @@ export default {
       this.spinning = false;
     },
     async changeType(val) {
-      console.log(val)
       this.tab = val;
       this.getArtist(val);
+    },
+    async toArtist(id) {
+        this.$router.push({ path: `/music/details/${id}`, query:{type: 'artist'} });
     }
   }
 };
@@ -147,6 +137,7 @@ export default {
         .artists-songer {
           width: 100px;
           height: 100px;
+          border-radius: 50px;
         }
       }
     }

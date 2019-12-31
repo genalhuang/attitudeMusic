@@ -124,3 +124,12 @@ export function getArtistList (cat, limit = defaultLimit) {
     }
   })
 }
+
+// 歌手单曲
+export function getArtistSong (id) {
+  return axios.get('/artists', {
+    params: {
+      id: id
+    }
+  })
+}
