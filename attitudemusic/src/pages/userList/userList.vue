@@ -35,7 +35,6 @@ export default {
     };
   },
   activated() {
-    console.log(this.$store.state.user.username,this.$store.state.user.username !== undefined)
     this.favoriteList();
   },
   methods: {

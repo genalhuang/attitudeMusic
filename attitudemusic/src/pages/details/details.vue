@@ -68,7 +68,6 @@ export default {
       getPlaylistDetail(this.id).then(res => {
         if (res.data.code === 200) {
           this.playlist = res.data.playlist;
-          console.log(this.playlist.tracks)
           this.list = formatTopSongs(this.playlist.tracks);
           document.title = `${this.playlist.name} - ATM`;
           // 获取并处理歌单歌曲
@@ -147,9 +146,7 @@ export default {
       this.spinning = true;
       const data = await getArtistSong(id)
       if (data.data.code === 200) {
-          console.log(data.data.artist)
           this.playlist = data.data.artist;
-          console.log(this.playlist.tracks)
           this.list = formatTopSongs(data.data.hotSongs);
           this._getFavoriteSong()
       } else {
