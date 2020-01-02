@@ -47,7 +47,7 @@ export default {
         if (time > -1) {
           this.lyricIndex = time
         }
-      }, 1000)
+      }, 100)
       this.getLyric();
     });
   },

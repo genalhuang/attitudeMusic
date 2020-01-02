@@ -2,27 +2,35 @@
   <!--ATM播放器-->
   <div class="atm-player">
     <audio id="atmPlayer">
-      <source src="https://music.163.com/song/media/outer/url?id=1374056689.mp3" type="audio/mpeg" />Your browser does not support the audio element.
+      <source src="" type="audio/mpeg" />Your browser does not support the audio element.
     </audio>
     <div class="atm-controller">
       <div class="atm-btns">
         <div class="atm-btn">
-          <img src="@/assets/atm_player/last.png" alt="上一首" @click="lastMusic" />
+          <img src="@/assets/atm_player/speed.png" class='rotate' alt="快退" @click="reverseMusic" />
+        </div>
+        <div class="atm-btn">
+          <img src="@/assets/atm_player/last.png" class='rotate' alt="上一首" @click="lastMusic" />
         </div>
         <div class="atm-btn">
           <img v-if="play" src="@/assets/atm_player/stop.png" alt="播放" @click="playMusic" />
           <img v-if="!play" src="@/assets/atm_player/start.png" alt="暂停" @click="pauseMusic" />
         </div>
         <div class="atm-btn">
-          <img src="@/assets/atm_player/next.png" alt="下一首" @click="nextMusic" />
+          <img src="@/assets/atm_player/last.png" alt="下一首" @click="nextMusic" />
         </div>
         <div class="atm-btn">
-          <img v-if="single" src="@/assets/atm_player/single.png" alt="单曲" @click="singleMusic" />
-          <img v-if="!single" src="@/assets/atm_player/nosingle.png" alt="不单曲" @click="singleMusic" />
+          <img src="@/assets/atm_player/speed.png" alt="快进" @click="speedMusic" />
+        </div>
+        <div class="atm-btn">
+          <img v-if="!single" src="@/assets/atm_player/single.png" alt="单曲" @click="singleMusic" />
+          <img v-if="single" src="@/assets/atm_player/nosingle.png" alt="不单曲" @click="singleMusic" />
         </div>
       </div>
       <div class="atm-progress">
-        <div class="atm-name" v-if="audio.data">{{audio.data.name}}</div>
+        <div class="atm-name">
+          <div  v-if="audio.data">{{audio.data.name}}</div>
+        </div>
         <div class="atm-bar">
           <div ref="currentTime" class="currentTime"></div>
         </div>
@@ -60,13 +68,14 @@ export default {
   },
   mounted() {
     this.audio = document.getElementById("atmPlayer");
-    this.audio.src =
-      "https://music.163.com/song/media/outer/url?id=1374056689.mp3";
+    this.audio.src = "";
     this.audio.addEventListener("play", () => {
+      console.log('adsf')
+      this.play = false;
       setTimeout(() => {
-        this.play = false;
+
         this.controlMusicTime();
-      }, 900);
+      }, 100);
     });
   },
   methods: {
@@ -96,7 +105,7 @@ export default {
         this.currentTime = this.audio.currentTime;
         this.$refs.currentTime.style.width =
           600 * (this.currentTime / this.duration) + "px";
-      }, 1000);
+      }, 100);
     },
     pauseMusic() {
       this.play = true;
@@ -138,6 +147,14 @@ export default {
     },
     singleMusic() {
       this.single = !this.single;
+    },
+    reverseMusic() {
+      this.audio.currentTime -= 15;
+      this.currentTime = this.audio.currentTime
+    },
+    speedMusic() {
+      this.audio.currentTime += 15;
+      this.currentTime = this.audio.currentTime
     }
   }
 };
@@ -157,12 +174,18 @@ export default {
       display: flex;
       .atm-btn {
         margin: 20px;
+        width: 40px;
+        height: 40px;
         img {
-          width: 40px;
+          width: 100%;
+        }
+        .rotate {
+          transform: rotate(180deg);
         }
       }
     }
     .atm-progress {
+      height: 60px;
       min-width: 800px;
       .atm-bar {
         border-radius: 5px;
@@ -171,6 +194,9 @@ export default {
         height: 10px;
         background-color: #d9d9d9;
         display: inline-block;
+      }
+      .atm-name {
+        height: 25px;
       }
       .currentTime {
         width: 0px;

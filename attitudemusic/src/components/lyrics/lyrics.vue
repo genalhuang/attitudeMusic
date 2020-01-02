@@ -80,7 +80,7 @@ export default {
         if (time > -1) {
           this.lyricIndex = time
         }
-      }, 1000)
+      }, 900)
     },
     // 计算歌词居中的 top值
     clacTop() {
