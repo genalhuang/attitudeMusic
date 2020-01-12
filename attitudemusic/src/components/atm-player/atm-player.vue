@@ -27,8 +27,8 @@
           <img v-if="single" src="@/assets/atm_player/nosingle.png" alt="不单曲" @click="singleMusic" />
         </div>
         <div class="atm-btn" @click="changeLike">
-          <img v-if="like" src="@/assets/img/like.png" alt="单曲"/>
-          <img v-if="!like" src="@/assets/img/unlike.png" alt="不单曲"/>
+          <img v-if="like" src="@/assets/img/like.png" alt="喜欢"/>
+          <img v-if="!like" src="@/assets/img/unlike.png" alt="不喜欢"/>
         </div>
       </div>
       <div class="atm-progress">
@@ -178,6 +178,7 @@ export default {
       }
     },
     async changeLike() {
+      console.log('adf',this.$store.state.user.username)
       if(!this.$store.state.user.username) {
         this.$message.error('请先登录账号');
         return;
