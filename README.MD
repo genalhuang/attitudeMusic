@@ -18,5 +18,5 @@
 ## 作者
 ```
   edison
-  github:<a href="https://codeclimate.com/github/Binaryify/NeteaseCloudMusicApi"><img src="https://codeclimate.com/github/Binaryify/NeteaseCloudMusicApi/badges/gpa.svg" />edison</a>
+  github:[edison]https://github.com/krisguanxi
 ```
