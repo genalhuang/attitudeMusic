@@ -1,6 +1,9 @@
 # ATM态度音乐
 
-## 超级无敌简单使用运行方法
+## 环境
+  安装node就行
+
+## 超级无敌简单运行方法
 ```
   新建终端1
   cd attitudemusic
@@ -18,5 +21,5 @@
 ## 作者
 ```
   edison
-  github:<a href="https://github.com/krisguanxi">edison</a>
+  github:[edison](https://github.com/krisguanxi)
 ```
