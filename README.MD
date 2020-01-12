@@ -19,7 +19,4 @@
   nodemon app.js
 ```
 ## 作者
-```
-  edison
   github:[edison](https://github.com/krisguanxi)
-```
