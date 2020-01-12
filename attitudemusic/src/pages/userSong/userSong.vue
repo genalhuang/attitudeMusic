@@ -44,12 +44,14 @@ export default {
         this.spinning = false;
         if(typeof data.data === 'object') {
           this.idList = data.data.favoriteSong;
-          this.idList.filter(async (item) => {
+          this.idList.filter(async (item, index) => {
             const data = await getMusicDetail(item)
             data.data.songs[0].like = true;
-            this.dataList.push(data.data.songs[0])
-            if(this.dataList.length === this.idList.length) {
-               this.dataList = formatTopSongs(this.dataList)
+            this.dataList[index] = data.data.songs[0]
+            if(this.dataList.filter((item) => {
+              return item.name !== '';
+            }).length === this.idList.length) {
+              this.dataList = formatTopSongs(this.dataList)
             }
           })
         }

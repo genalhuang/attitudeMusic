@@ -26,6 +26,10 @@
           <img v-if="!single" src="@/assets/atm_player/single.png" alt="单曲" @click="singleMusic" />
           <img v-if="single" src="@/assets/atm_player/nosingle.png" alt="不单曲" @click="singleMusic" />
         </div>
+        <div class="atm-btn" @click="changeLike">
+          <img v-if="like" src="@/assets/img/like.png" alt="单曲"/>
+          <img v-if="!like" src="@/assets/img/unlike.png" alt="不单曲"/>
+        </div>
       </div>
       <div class="atm-progress">
         <div class="atm-name">
@@ -42,6 +46,7 @@
 
 <script>
 import { format } from "@/utils/util";
+import { getFavoriteSong, postFavoriteSong} from "api/favorite";
 export default {
   name: "AtmPlayer",
   components: {},
@@ -63,17 +68,18 @@ export default {
       duration: 0,
       currentTime: 0,
       interval: "",
-      single: false
+      single: false,
+      like: false
     };
   },
   mounted() {
     this.audio = document.getElementById("atmPlayer");
     this.audio.src = "";
     this.audio.addEventListener("play", () => {
-      console.log('adsf')
       this.play = false;
+      this.like = false;
+      this.isFavoriteMusic()
       setTimeout(() => {
-
         this.controlMusicTime();
       }, 100);
     });
@@ -155,7 +161,40 @@ export default {
     speedMusic() {
       this.audio.currentTime += 15;
       this.currentTime = this.audio.currentTime
-    }
+    },
+    async isFavoriteMusic() {
+      if(this.$store.state.user.username) {
+        const user = this.$store.state.user
+        const data = await getFavoriteSong(user)
+        if(typeof data.data === 'object') {
+          const idList = data.data.favoriteSong;
+          idList.map((item) => {
+            if(parseInt(item) === parseInt(this.audio.data.id)) {
+              this.like = true;
+              console.log(true)
+            }
+          })
+        }
+      }
+    },
+    async changeLike() {
+      if(!this.$store.state.user.username) {
+        this.$message.error('请先登录账号');
+        return;
+      } 
+      const params = {
+        ...this.$store.state.user,
+        songId: this.audio.data.id
+      }
+      const data = await postFavoriteSong(params)
+      if(typeof data.data === 'object') {
+        this.$message.success('歌单更新成功')
+        this.$store.commit('setUserInfo', data.data);
+        this.like = !this.like;
+      } else {
+        this.$message.error(data.data)
+      }
+    },
   }
 };
 </script>

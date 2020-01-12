@@ -10,7 +10,7 @@
           <div class="details-text title">{{playlist.name}}</div>
           <div class="details-text">{{playlist.description || playlist.briefDesc}}</div>
           <div class="details-text" v-if='type !== "artist"'>创建时间 : {{playlist.createTime | formatDate}}</div>
-          <div class="details-img" @click='changekLike'>
+          <div class="details-img" @click='changeLike' v-if='type !== "artist"'>
             <img v-if='like' src="@/assets/img/like.png" alt="">
             <img v-if='!like' src="@/assets/img/unlike.png" alt="">
           </div>
@@ -104,7 +104,7 @@ export default {
         this.$store.commit("setHistoryList", data);
       }
     },
-    async changekLike() {
+    async changeLike() {
       if(!this.$store.state.user.username) {
         this.$message.error('请先登录账号');
         return;

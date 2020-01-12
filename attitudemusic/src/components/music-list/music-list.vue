@@ -42,7 +42,6 @@ export default {
   },
   watch: {
     list: function (val) {
-      console.log('change')
       this.myList = val
       this.list = val
     }
