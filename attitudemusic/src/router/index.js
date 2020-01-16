@@ -9,6 +9,7 @@ import historyList from 'pages/historyList/historyList'
 import search from 'pages/search/search'
 import userSong from 'pages/userSong/userSong'
 import artist from 'pages/artist/artist'
+import video from 'pages/video/video'
 
 Vue.use(Router)
 
@@ -81,6 +82,13 @@ const routes = [
         component: artist,
         meta: {
           title: '歌手列表'
+        }
+      },
+      {
+        path: '/music/video', // 音乐评论
+        component: video,
+        meta: {
+          title: '视频列表'
         }
       }
     ]

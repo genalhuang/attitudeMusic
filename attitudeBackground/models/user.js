@@ -15,6 +15,9 @@ var userSchema = new Schema({
     },
     favoriteSong: {
       type: Array
+    },
+    videos: {
+      type: Array
     }
 });
 // 将数据模型暴露出去

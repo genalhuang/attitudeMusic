@@ -10,7 +10,8 @@ export default new Vuex.Store({
       favoriteList: [],
       favoriteSong: [],
       userName: '',
-      password: ''
+      password: '',
+      videos: []
     }
   },
   mutations: {

@@ -47,7 +47,8 @@ export default {
       page: 0, // 分页
       lockUp: true, // 是否锁定上拉加载事件,默认锁定
       spinning: false,
-      idList: []
+      idList: [],
+      videoSrc: ''
     }
   },
   activated() {
@@ -129,7 +130,7 @@ export default {
           this.spinning = false;
         }
       }
-    },
+    }
   }
 };
 </script>

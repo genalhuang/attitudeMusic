@@ -28,3 +28,16 @@ export function getFavoriteSong (params) {
     params
   })
 }
+
+// 更新收藏列表
+export function postVideo (params) {
+  return axios.post(`${ATMURL}/video`, params)
+}
+
+// 获取收藏列表
+export function getVideo (params) {
+  return axios.get(`${ATMURL}/video`, {
+    responseType:  'arraybuffer',
+    params
+  })
+}

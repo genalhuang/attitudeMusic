@@ -2,6 +2,7 @@ var fs = require('fs')
 var express = require('express')
 var router = express.Router()
 var User = require('./models/user.js')
+var multer = require('multer')
 
 router.get('/', function (req, resU) {
   var scriptStr = `hello world`
@@ -73,15 +74,13 @@ router.post('/favoriteList', function (req, res) {
 
   User.findOne(postData, function (err, data) {
     if (err) throw err;
-    console.log(data.favoriteList, 'favoriteList')
-    console.log(listId, 'listId')
-    if(data.favoriteList.length === 0) {
+    if (data.favoriteList.length === 0) {
       data.favoriteList.push(listId)
     } else {
       let index = data.favoriteList.indexOf(listId)
-      if ( index === -1) {
+      if (index === -1) {
         data.favoriteList.push(listId)
-      } else if( index !== -1) { 
+      } else if (index !== -1) {
         var c = data.favoriteList.splice(index, 1)
       }
     }
@@ -121,13 +120,13 @@ router.post('/favoriteSong', function (req, res) {
 
   User.findOne(postData, function (err, data) {
     if (err) throw err;
-    if(data.favoriteSong.length === 0) {
+    if (data.favoriteSong.length === 0) {
       data.favoriteSong.push(songId)
     } else {
       let index = data.favoriteSong.indexOf(songId)
-      if ( index === -1) {
+      if (index === -1) {
         data.favoriteSong.push(songId)
-      } else if( index !== -1) { 
+      } else if (index !== -1) {
         var c = data.favoriteSong.splice(index, 1)
       }
     }
@@ -156,4 +155,69 @@ router.get('/favoriteSong', function (req, res) {
   });
 
 })
+
+
+// 视频相关
+var createFolder = function (folder) {
+  try {
+    fs.accessSync(folder);
+  } catch (e) {
+    fs.mkdirSync(folder);
+  }
+};
+var uploadFolder = './upload/';
+createFolder(uploadFolder);
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, uploadFolder); 
+  },
+  filename: function (req, file, cb) {
+    let suffix = file.mimetype.split('/')[1];
+    cb(null, file.originalname);
+  }
+});
+var upload = multer({ storage: storage })
+// 上传视频
+router.post('/video', upload.single('file'), function (req, res) {
+  const postData = {
+    _id: req.body._id,
+  };
+  User.findOne(postData, function (err, data) {
+    if (err) throw err;
+    data.videos.push(req.body.filename)
+    User.update(postData, data, function (err, data2) {
+      if (err) throw err;
+        res.send('上传成功')
+    })
+  });
+})
+
+// 获取视频
+router.get('/video', function (req, res) {
+  const postData = {
+    _id: req.query._id,
+  };
+  let video = req.query.video
+  User.findOne(postData, function (err, data) {
+    if (err) throw err;
+    let videos = data.videos;
+    for(let i = 0; i < videos.length; i++) {
+      if(videos[i] === video) {
+        fs.readFile(`./upload/${videos[i]}`, function (err, data2) {
+          if (err) {
+            res.end("文件读取失败");
+          } else {
+            // 文件读取成功
+            res.end(data2);
+          }
+        })
+      }
+    }
+  });
+
+})
+
+
+
+
 module.exports = router
