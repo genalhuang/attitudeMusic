@@ -26,6 +26,7 @@ export default {
 
 <style lang="less" scoped>
 .music {
+  background-image:url('../assets/logo.png');
   .music-content {
     // overflow: hidden;
     height: 70vh;

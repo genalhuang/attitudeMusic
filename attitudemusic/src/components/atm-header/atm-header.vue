@@ -1,6 +1,6 @@
 <template>
-  <div class="music">
-    <a-dropdown class='music-account'>
+  <div class="music-header">
+    <a-dropdown class='music-header-account'>
       <a class="ant-dropdown-link" href="#" v-if='!isAccount'> 账号管理 <a-icon type="down" /> </a>
       <a class="ant-dropdown-link" href="#" v-if='isAccount'> 
         欢迎进入ATM,         
@@ -20,10 +20,10 @@
         </a-menu-item>
       </a-menu>
     </a-dropdown>
-    <div class="music-content">
-      <div class='music-title'>ATM</div>
+    <div class="music-header-content">
+      <div class='music-header-title'>ATM</div>
       <a-modal title="" v-model="showDialog" @ok='confirm' okText="确认" cancelText="取消">
-        <div class="music-register">
+        <div class="music-header-register">
           账号:<a-input v-model='username'></a-input>
           密码:<a-input v-model='password'></a-input>
         </div>
@@ -103,20 +103,20 @@ export default {
 </script>
 
 <style scoped lang="less" >
- .music {
-   .music-account {
+ .music-header {
+   .music-header-account {
      position: absolute;
      right: 20px;
      top: 80px;
      color: #fff;
    }
-   .music-content {
+   .music-header-content {
       text-align: center;
       height: 10vh;
       background-color: @attitude_color;
       line-height: 10vh;
       color: #fff;
-      .music-title {
+      .music-header-title {
         font-size: @font_size_large_x;
       }
       .ant-dropdown-link {
@@ -127,7 +127,7 @@ export default {
         color: #fff;
         font-size: @font_size_large_x;
       }
-      .music-register {
+      .music-header-register {
         display: flex;
         color: red;
       }

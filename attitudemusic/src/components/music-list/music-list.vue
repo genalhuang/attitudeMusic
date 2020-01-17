@@ -101,7 +101,7 @@ export default {
   border-bottom: 1px solid @list_head_line_color;
   color: @attitude_color;
   font-weight: bold;
-  background-color: #fff;
+  // background-color: #fff;
   .list-name {
     padding-left: 40px;
     user-select: none;
