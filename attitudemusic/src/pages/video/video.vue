@@ -31,7 +31,6 @@
       class='preview-modal'
       :title="videoSrc" 
       v-model="visible" 
-      bodyStyle={background:red}
       :destroyOnClose='true' 
       @ok='()=>{visible = !visible}'
       :width='900'

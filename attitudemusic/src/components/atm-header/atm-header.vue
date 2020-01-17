@@ -96,6 +96,7 @@ export default {
       Cookie.set('userInfo','');
       this.isAccount = false;
       this.$router.push({ path: '/'});
+      location.reload();
     }
   }
 }
