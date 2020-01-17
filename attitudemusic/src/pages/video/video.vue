@@ -32,6 +32,7 @@
 <script>
 import {  getVideo, postVideo, deleteVideo } from "api/favorite";
 import Player from 'xgplayer';
+import Cookie from 'js-cookie'
 export default {
   name: "Video",
   components: {
@@ -87,9 +88,10 @@ export default {
       formData.append('file', file);
       formData.append('filename', file.name);
       formData.append('_id', this.$store.state.user._id);
-      const a =  await postVideo(formData);
-      if (a) {
-        this.$store.commit('setUserInfo', a.data);
+      const res =  await postVideo(formData);
+      if (res.status === 200) {
+        this.$store.commit('setUserInfo', res.data);
+        Cookie.set('userInfo', res.data);
         this.getVideo();
         this.$message.success('上传成功');
       } else {
@@ -107,10 +109,10 @@ export default {
       let res = await deleteVideo(params)
       if(res.status === 200) {
         this.$store.commit('setUserInfo', res.data);
+        Cookie.set('userInfo',res.data);
         this.getVideo();
       }
       this.spinning = false;
-      console.log(res)
     }
   }
 };
