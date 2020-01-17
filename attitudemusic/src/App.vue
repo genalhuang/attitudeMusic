@@ -12,12 +12,11 @@ export default {
     AtmHeader
   },
   created() {
-    saveUserInfo()
+    saveUserInfo();
   },
   mounted() {
     window.onbeforeunload = () => {      //刷新时弹出提示
-      this.$router.push({path: '/'})
-      alert('234')
+      this.$router.push({path: '/'});
     };
   }
 };
