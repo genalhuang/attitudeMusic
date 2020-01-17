@@ -177,6 +177,9 @@ var storage = multer.diskStorage({
   }
 });
 var upload = multer({ storage: storage })
+
+
+
 // 上传视频
 router.post('/video', upload.single('file'), function (req, res) {
   const postData = {
@@ -184,11 +187,19 @@ router.post('/video', upload.single('file'), function (req, res) {
   };
   User.findOne(postData, function (err, data) {
     if (err) throw err;
-    data.videos.push(req.body.filename)
-    User.update(postData, data, function (err, data2) {
-      if (err) throw err;
+    for(let video of data.videos) {
+      if (video === req.body.filename) {
         res.send(data)
-    })
+        return;
+      } else {
+        data.videos.push(req.body.filename)
+        User.update(postData, data, function (err, data2) {
+          if (err) throw err;
+            res.send(data)
+        })
+      }
+    }
+
   });
 })
 

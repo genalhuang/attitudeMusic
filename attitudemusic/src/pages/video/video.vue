@@ -17,7 +17,10 @@
         <template v-for='(item,i) in $store.state.user.videos'>
           <div :key='i'>
             <div :id='"atm-video"+i' class='video'></div>
-            <div class='text' v-if='!spinning'>{{item}}</div>
+            <div class='text' v-if='!spinning'>
+              {{item}}
+              <a-button v-if='!spinning' type='danger'><a-icon type="delete" />删除</a-button>
+            </div>
           </div>
         </template>
       </div>
@@ -125,6 +128,7 @@ export default {
       }
       .text {
         font-size: 20px;
+        margin-top: 10px;
         font-weight: bold;
       }
       &:hover{
