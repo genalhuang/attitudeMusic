@@ -15,17 +15,29 @@
     </div>
     <a-spin :spinning='spinning'>
       <div class='video-content'>
-        <template v-for='(item,i) in $store.state.user.videos'>
-          <div :key='i'>
+        <div v-for='(item,i) in $store.state.user.videos' :key='i'>
+          <div class='video-mask' @click='previewVideo(item)'>
             <div :id='"atm-video"+i' class='video'></div>
-            <div class='text' v-if='!spinning'>
-              {{item}}
-              <a-button v-if='!spinning' type='danger' @click='deleteVideo(item)'><a-icon type="delete" />删除</a-button>
-            </div>
           </div>
-        </template>
+          <div class='text' v-if='!spinning'>
+            {{item}}
+            <a-button v-if='!spinning' type='danger' @click='deleteVideo(item)'><a-icon type="delete" />删除</a-button>
+          </div>
+        </div>
       </div>
     </a-spin>
+    <!-- 预览mv的弹窗 -->
+    <a-modal 
+      class='preview-modal'
+      :title="videoSrc" 
+      v-model="visible" 
+      bodyStyle={background:red}
+      :destroyOnClose='true' 
+      @ok='()=>{visible = !visible}'
+      :width='900'
+    >
+      <video-preview :videoSrc='videoSrc'></video-preview>
+    </a-modal>
   </div>
 </template>
 
@@ -33,17 +45,20 @@
 import {  getVideo, postVideo, deleteVideo } from "api/favorite";
 import Player from 'xgplayer';
 import Cookie from 'js-cookie'
+import VideoPreview from './components/videoPreview.vue'
 export default {
   name: "Video",
   components: {
+    VideoPreview
   },
   data() {
     return {
       videoSrc: '',
-      spinning: false
+      spinning: false,
+      visible: false
     }
   },
-  activated() {
+  created() {
     this.getVideo();
   },
   methods: {
@@ -101,18 +116,34 @@ export default {
       return false;
     },
     async deleteVideo(video) {
-      this.spinning = true;
-      let params = {
-        _id: this.$store.state.user._id,
-        video
-      }
-      let res = await deleteVideo(params)
-      if(res.status === 200) {
-        this.$store.commit('setUserInfo', res.data);
-        Cookie.set('userInfo',res.data);
-        this.getVideo();
-      }
-      this.spinning = false;
+      const that = this;
+      this.$confirm({
+        title: '确认删除该mv吗？',
+        okText: '确认',
+        cancelText: '取消',
+        centered: true,
+        async onOk() {
+          that.spinning = true;
+          let params = {
+            _id: that.$store.state.user._id,
+            video
+          }
+          let res = await deleteVideo(params)
+          if(res.status === 200) {
+            that.$store.commit('setUserInfo', res.data);
+            Cookie.set('userInfo',res.data);
+            that.getVideo();
+          }
+          that.spinning = false;
+        }
+      });
+    },
+    // 挂载预览视频
+    previewVideo(video) {
+      setTimeout(() => {
+        this.visible= !this.visible
+      },100)
+      this.videoSrc=video;
     }
   }
 };
@@ -135,10 +166,23 @@ export default {
       width: 25%;
       margin:2% 4%;
       float: left;
+      .video-mask {
+        &:before  {
+          content:'';
+          width:375px;
+          height:211px;
+          display: block;
+          position: absolute;
+          z-index: 999;
+          background-color: rgba(0,0,0,0);
+          cursor: pointer;
+        }
+      }
       .video {
         border-radius: 10px;
         overflow: hidden;
         transition: .3s linear;
+
       }
       .video:hover {
         transform:translateY(-10px);

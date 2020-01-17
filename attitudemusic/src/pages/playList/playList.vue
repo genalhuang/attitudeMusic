@@ -2,8 +2,8 @@
   <!--正在播放-->
   <div class='playList'>
     <div class="playList-content">
-      <div v-if="music" class="playList-left">
-        <img :src="music.image || 'http://p4.music.126.net/4didUTCXHzRrQvaXFEGcYg==/109951164475111588.jpg?param=200y200'" alt="专辑照片" class="playList-img" />
+      <div v-if="music !== {}" class="playList-left">
+        <img v-if='start' :src="music.image || 'http://p4.music.126.net/4didUTCXHzRrQvaXFEGcYg==/109951164475111588.jpg?param=200y200'" alt="专辑照片" class="playList-img" />
         <div class="playList-text">{{ music.name }}</div>
         <div class="playList-text">{{ music.singer }}</div>
       </div>
@@ -31,14 +31,21 @@ export default {
       music: {},
       lyric: null,
       nolyric: true,
-      lyricIndex: 0
+      lyricIndex: 0,
+      start: false
     };
+  },
+  activated() {
+    if(!this.start) {
+      this.$message.info('暂无正在播放')
+    }
   },
   mounted() {
     // 监听播放事件切换歌词
     document.getElementById("atmPlayer").addEventListener("play", () => {
-      this.music = document.getElementById("atmPlayer").data;
+      this.music = document.getElementById("atmPlayer").data || {};
       let time
+      this.start = true;
       setInterval(() => {
         time = Math.floor(document.getElementById('atmPlayer').currentTime)
         time = this.lyric.findIndex((item) => {
