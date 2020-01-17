@@ -187,7 +187,7 @@ router.post('/video', upload.single('file'), function (req, res) {
     data.videos.push(req.body.filename)
     User.update(postData, data, function (err, data2) {
       if (err) throw err;
-        res.send('上传成功')
+        res.send(data)
     })
   });
 })
@@ -200,6 +200,7 @@ router.get('/video', function (req, res) {
   let video = req.query.video
   User.findOne(postData, function (err, data) {
     if (err) throw err;
+    res.end('adf')
     let videos = data.videos;
     for(let i = 0; i < videos.length; i++) {
       if(videos[i] === video) {
