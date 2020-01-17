@@ -16,9 +16,9 @@
       <div class='video-content'>
         <template v-for='(item,i) in $store.state.user.videos'>
           <div :key='i'>
-            <div :id='"atm-video"+i'>
+            <div :id='"atm-video"+i'></div>
             <div v-if='!spinning'>{{item}}</div>
-          </div></div>
+          </div>
         </template>
       </div>
     </a-spin>
@@ -69,7 +69,7 @@ export default {
     },
     // 限制视频上传小于1G && 手动上传
     async beforeUpload(file) {
-      if(!this.$stoer.state.user.username) {
+      if(!this.$store.state.user.username) {
         this.$message.error('请先登录')
         return false;
       }

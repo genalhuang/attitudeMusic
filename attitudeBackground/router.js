@@ -200,7 +200,6 @@ router.get('/video', function (req, res) {
   let video = req.query.video
   User.findOne(postData, function (err, data) {
     if (err) throw err;
-    res.end('adf')
     let videos = data.videos;
     for(let i = 0; i < videos.length; i++) {
       if(videos[i] === video) {
