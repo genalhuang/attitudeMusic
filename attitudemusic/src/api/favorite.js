@@ -29,15 +29,22 @@ export function getFavoriteSong (params) {
   })
 }
 
-// 更新收藏列表
+// 上传mv
 export function postVideo (params) {
   return axios.post(`${ATMURL}/video`, params)
 }
 
-// 获取收藏列表
+// 获取mv
 export function getVideo (params) {
   return axios.get(`${ATMURL}/video`, {
     responseType:  'arraybuffer',
+    params
+  })
+}
+
+// 删除mv
+export function deleteVideo (params) {
+  return axios.get(`${ATMURL}/video/delete`, {
     params
   })
 }
