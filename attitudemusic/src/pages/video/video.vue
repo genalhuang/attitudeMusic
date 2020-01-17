@@ -1,23 +1,23 @@
 <template>
   <!--搜索-->
   <div class="video">
-          <div class='video-footer'>
-         <a-upload
-          accept='video/*'
-          :multiple="false"
-          :showUploadList="false"
-          :customRequest="()=>{}"
-          :beforeUpload="beforeUpload"
-        >
-          <a-button> <a-icon type="upload" /> Click to Upload </a-button>
-        </a-upload>
-      </div>
+    <div class='video-footer'>
+        <a-upload
+        accept='video/*'
+        :multiple="false"
+        :showUploadList="false"
+        :customRequest="()=>{}"
+        :beforeUpload="beforeUpload"
+      >
+        <a-button> <a-icon type="upload" />上传mv</a-button>
+      </a-upload>
+    </div>
     <a-spin :spinning='spinning'>
       <div class='video-content'>
         <template v-for='(item,i) in $store.state.user.videos'>
           <div :key='i'>
-            <div :id='"atm-video"+i'></div>
-            <div v-if='!spinning'>{{item}}</div>
+            <div :id='"atm-video"+i' class='video'></div>
+            <div class='text' v-if='!spinning'>{{item}}</div>
           </div>
         </template>
       </div>
@@ -38,7 +38,7 @@ export default {
       spinning: false
     }
   },
-  activated() {
+  created() {
     this.getVideo();
   },
   methods: {
@@ -86,8 +86,8 @@ export default {
       const a =  await postVideo(formData);
       if (a) {
         this.$store.commit('setUserInfo', a.data);
-        this.$message.success('上传成功');
         this.getVideo();
+        this.$message.success('上传成功');
       } else {
         this.$message.error('上传失败');
       }
@@ -106,19 +106,35 @@ export default {
   height: 70vh;
   .video-content {
     position: relative;
-    width: 1500px;
+    width: 100%;
     margin: 0 auto;
     height: 70vh;
     overflow: auto;
     > div {
       display: inline-block;
       width: 25%;
-      margin: 3%;
+      margin:2% 4%;
+      float: left;
+      .video {
+        border-radius: 10px;
+        overflow: hidden;
+        transition: .3s linear;
+      }
+      .video:hover {
+        transform:translateY(-10px);
+      }
+      .text {
+        font-size: 20px;
+        font-weight: bold;
+      }
+      &:hover{
+        color: @attitude_light_color;
+      }
     }
   }
   .video-footer {
-    height: 50px;
-    padding: 30px;
+    height: 60px;
+    padding-top: 15px;
   }
 }
 </style>
