@@ -1,14 +1,15 @@
 <template>
   <!--搜索-->
   <div class="video">
-    <div class='video-footer'>
+    <div class='video-top'>
+        <!-- <div class='title'>我的mv</div> -->
         <a-upload
         accept='video/*'
         :multiple="false"
         :showUploadList="false"
         :customRequest="()=>{}"
         :beforeUpload="beforeUpload"
-      >
+      > 
         <a-button> <a-icon type="upload" />上传mv</a-button>
       </a-upload>
     </div>
@@ -19,7 +20,7 @@
             <div :id='"atm-video"+i' class='video'></div>
             <div class='text' v-if='!spinning'>
               {{item}}
-              <a-button v-if='!spinning' type='danger'><a-icon type="delete" />删除</a-button>
+              <a-button v-if='!spinning' type='danger' @click='deleteVideo(item)'><a-icon type="delete" />删除</a-button>
             </div>
           </div>
         </template>
@@ -29,7 +30,7 @@
 </template>
 
 <script>
-import {  getVideo, postVideo } from "api/favorite";
+import {  getVideo, postVideo, deleteVideo } from "api/favorite";
 import Player from 'xgplayer';
 export default {
   name: "Video",
@@ -41,7 +42,7 @@ export default {
       spinning: false
     }
   },
-  created() {
+  activated() {
     this.getVideo();
   },
   methods: {
@@ -70,15 +71,15 @@ export default {
         }
       }
     },
-    // 限制视频上传小于1G && 手动上传
+    // 限制视频上传小于200m && 手动上传
     async beforeUpload(file) {
       if(!this.$store.state.user.username) {
         this.$message.error('请先登录')
         return false;
       }
-      const isLt1G = file.size / 1024 / 1024 < 1000;
-      if (!isLt1G) {
-        this.$message.error('视频必须小于1G');
+      const isLt200m = file.size / 1024 / 1024 < 200;
+      if (!isLt200m) {
+        this.$message.error('视频必须小于200m');
         return false;
       }
       this.spinning = true;
@@ -96,6 +97,20 @@ export default {
       }
       this.spinning = false;
       return false;
+    },
+    async deleteVideo(video) {
+      this.spinning = true;
+      let params = {
+        _id: this.$store.state.user._id,
+        video
+      }
+      let res = await deleteVideo(params)
+      if(res.status === 200) {
+        this.$store.commit('setUserInfo', res.data);
+        this.getVideo();
+      }
+      this.spinning = false;
+      console.log(res)
     }
   }
 };
@@ -136,9 +151,16 @@ export default {
       }
     }
   }
-  .video-footer {
+  .video-top {
     height: 60px;
     padding-top: 15px;
+    border-bottom: 5px solid @attitude_color;
+    display: flex;
+    justify-content: center;
+    > .title {
+      font-size: 24px;
+      font-weight: bold;
+    }
   }
 }
 </style>

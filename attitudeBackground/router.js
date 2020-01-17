@@ -188,18 +188,16 @@ router.post('/video', upload.single('file'), function (req, res) {
   User.findOne(postData, function (err, data) {
     if (err) throw err;
     for(let video of data.videos) {
-      if (video === req.body.filename) {
+      if(video === req.body.filename) {
         res.send(data)
         return;
-      } else {
-        data.videos.push(req.body.filename)
-        User.update(postData, data, function (err, data2) {
-          if (err) throw err;
-            res.send(data)
-        })
       }
     }
-
+    data.videos.push(req.body.filename)
+    User.update(postData, data, function (err, data2) {
+      if (err) throw err;
+      res.send(data)
+    })
   });
 })
 
@@ -225,7 +223,29 @@ router.get('/video', function (req, res) {
       }
     }
   });
+})
 
+// 删除视频
+router.get('/video/delete', function (req, res) {
+  const postData = {
+    _id: req.query._id,
+  };
+  let video = req.query.video
+  User.findOne(postData, function (err, data) {
+    if (err) throw err;
+    let videos = data.videos;
+    videos.filter((item, i) => {
+      if( item === video) {
+        data.videos.splice(i,1)
+        User.update(postData, data, function (err, data2) {
+          if (err) throw err;
+          if (data2) 
+            res.end(JSON.stringify(data))
+        })
+      }
+    })
+    res.send(data)
+  });
 })
 
 
