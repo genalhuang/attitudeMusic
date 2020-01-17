@@ -32,23 +32,26 @@ export default {
   methods: {
     async getVideo() {
       if(this.$store.state.user.videos) {  
-          let params = {
-            _id: this.$store.state.user._id,
-            video: this.video
-          }
-          let res = await getVideo(params)
-          if(res.status === 200) {
-            const blob = new Blob([res.data], {type: 'application/mp4'});
-            const href = window.URL.createObjectURL(blob);
-            this.video = href;
-            new Player({
-              id: 'preview',
-              url: this.video,
-              fluid: true,
-              videoInit: true,
-              playbackRate: [0.5, 0.75, 1, 1.5, 2],
-              autoplay: true
-            });
+        let params = {
+          _id: this.$store.state.user._id,
+          video: this.video
+        }
+        let res = await getVideo(params)
+        if(res.status === 200) {
+          const blob = new Blob([res.data], {type: 'application/mp4'});
+          const href = window.URL.createObjectURL(blob);
+          this.video = href;
+          new Player({
+            id: 'preview',
+            url: this.video,
+            fluid: true,
+            videoInit: true,
+            playbackRate: [0.5, 0.75, 1, 1.5, 2],
+            autoplay: true
+          });
+          // 修改ant-design样式
+          document.getElementsByClassName('ant-modal-footer')[0].style.display = 'none';
+          document.getElementsByClassName('ant-modal-body')[0].style.padding = '0';
           this.spinning = false;
         }
       }
@@ -59,6 +62,5 @@ export default {
 </script>
 <style scoped lang="less">
   .video-preview {
-    
   }
 </style>
