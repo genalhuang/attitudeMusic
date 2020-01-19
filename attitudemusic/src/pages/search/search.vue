@@ -34,6 +34,7 @@ import { search, searchHot, getMusicDetail } from 'api'
 import MusicList from 'components/music-list/music-list'
 import formatSongs from '@/utils/song'
 import { getFavoriteSong } from "api/favorite";
+import Cookie from 'js-cookie'
 export default {
   name: "Search",
   components: {
@@ -108,6 +109,7 @@ export default {
         return item.name === data.name
       }) === -1) {
         this.$store.commit('setHistoryList', data);
+        Cookie.set("historyList", this.$store.state.historyList);
       }
     },
     async favoriteSong() {

@@ -94,6 +94,7 @@ export default {
       this.$store.commit('setUserInfo', '');
       this.$store.commit("removeHistoryList");
       Cookie.set('userInfo','');
+      Cookie.set("historyList", '');
       this.isAccount = false;
       this.$router.push({ path: '/music/toplist'});
       location.reload();
