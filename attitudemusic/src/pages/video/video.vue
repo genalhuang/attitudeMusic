@@ -31,6 +31,8 @@
       class='preview-modal'
       :title="videoSrc" 
       v-model="visible" 
+      cancelText="取消"
+      okText="确定"
       :destroyOnClose='true' 
       @ok='()=>{visible = !visible}'
       :width='900'
