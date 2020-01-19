@@ -30,6 +30,7 @@ import { format, formatDate } from "@/utils/util";
 import MusicList from "components/music-list/music-list.vue";
 import { postFavoriteList } from 'api/favorite';
 import { getFavoriteSong } from 'api/favorite';
+import Cookie from 'js-cookie'
 export default {
   name: "Detail",
   components: {
@@ -102,6 +103,7 @@ export default {
         }) === -1
       ) {
         this.$store.commit("setHistoryList", data);
+        Cookie.set("historyList", this.$store.state.historyList);
       }
     },
     async changeLike() {

@@ -84,7 +84,7 @@ export default {
         this.username = data.data.username
         this.$store.commit('setUserInfo', data.data);
         Cookie.set('userInfo',data.data);
-        this.$router.push({ path: '/'});
+        this.$router.push({ path: '/music/toplist'});
       } else {
         this.$message.error(data.data)
       }
@@ -95,7 +95,7 @@ export default {
       this.$store.commit("removeHistoryList");
       Cookie.set('userInfo','');
       this.isAccount = false;
-      this.$router.push({ path: '/'});
+      this.$router.push({ path: '/music/toplist'});
       location.reload();
     }
   }

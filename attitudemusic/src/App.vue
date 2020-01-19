@@ -6,13 +6,14 @@
 </template>
 <script>
 import AtmHeader from "components/atm-header/atm-header.vue";
-import { saveUserInfo } from 'utils/userinfo.js'
+import { saveUserInfo, saveHistoryList } from 'utils/userinfo.js'
 export default {
   components: {
     AtmHeader
   },
   created() {
     saveUserInfo();
+    saveHistoryList();
   },
   mounted() {
     window.onbeforeunload = () => {      //刷新时弹出提示

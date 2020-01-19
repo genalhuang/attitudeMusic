@@ -18,6 +18,7 @@ import { getFavoriteSong } from "api/favorite";
 import { getMusicDetail } from 'api'
 import MusicList from "components/music-list/music-list.vue";
 import { formatTopSongs } from "@/utils/song";
+import Cookie from 'js-cookie';
 export default {
   name: "userSong",
   components: {
@@ -71,6 +72,7 @@ export default {
         }) === -1
       ) {
         this.$store.commit("setHistoryList", data);
+        Cookie.set("historyList", this.$store.state.historyList);
       }
     }
   }

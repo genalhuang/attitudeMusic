@@ -10,4 +10,14 @@ export const saveUserInfo = function saveUserInfo() {
     vuex.state.user = userInfo
   }
 }
+export const saveHistoryList = function saveHistoryList() {
+  let historyList = Cookie.get('historyList');
+  if(!historyList) {
+    return;
+  }
+  historyList = JSON.parse(historyList)
+  if (historyList) {
+    vuex.state.historyList = historyList
+  }
+}
 

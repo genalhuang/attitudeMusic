@@ -171,7 +171,6 @@ export default {
           idList.map((item) => {
             if(parseInt(item) === parseInt(this.audio.data.id)) {
               this.like = true;
-              console.log(true)
             }
           })
         }
