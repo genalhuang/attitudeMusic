@@ -17,7 +17,7 @@ export default {
   },
   mounted() {
     window.onbeforeunload = () => {      //刷新时弹出提示
-      this.$router.push({path: '/'});
+      this.$router.push({path: '/music/playList'});
     };
   }
 };

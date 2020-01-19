@@ -21,7 +21,7 @@ const routes = [
   {
     path: '/music',
     component: miusic,
-    redirect: '/music/topList',
+    redirect: '/music/playlist',
     children: [
       {
         path: '/music/playlist', // 正在播放列表

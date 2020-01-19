@@ -4,7 +4,7 @@
       <a class="ant-dropdown-link" href="#" v-if='!isAccount'> 账号管理 <a-icon type="down" /> </a>
       <a class="ant-dropdown-link" href="#" v-if='isAccount'> 
         欢迎进入ATM,         
-        <a-avatar style="color: #f56a00; backgroundColor: #fde3cf">U</a-avatar>
+        <a-avatar style="color: #f56a00; backgroundColor: #fde3cf">{{username.slice(0,1)}}</a-avatar>
         {{username}}
         <a-icon type="down" /> 
       </a>
@@ -84,7 +84,7 @@ export default {
         this.username = data.data.username
         this.$store.commit('setUserInfo', data.data);
         Cookie.set('userInfo',data.data);
-        this.$router.push({ path: '/music/toplist'});
+        this.$router.push({ path: '/music/playList'});
       } else {
         this.$message.error(data.data)
       }
@@ -96,7 +96,7 @@ export default {
       Cookie.set('userInfo','');
       Cookie.set("historyList", '');
       this.isAccount = false;
-      this.$router.push({ path: '/music/toplist'});
+      this.$router.push({ path: '/music/playList'});
       location.reload();
     }
   }
