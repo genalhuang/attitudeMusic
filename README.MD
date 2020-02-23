@@ -1,9 +1,10 @@
 # ATM态度音乐
 
 ## 环境
-  安装node就行
+  node
+  mongodb
 
-## 超级无敌简单运行方法
+## 启动
 ```
   新建终端1
   cd attitudemusic
