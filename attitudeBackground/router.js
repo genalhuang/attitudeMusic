@@ -9,7 +9,7 @@ router.get('/', function (req, resU) {
   res.end(scriptStr)
 })
 
-
+// 用户注册
 router.post('/register', function (req, res) {
   // 获取用户提交的信息
   console.log(req.body)
@@ -31,6 +31,7 @@ router.post('/register', function (req, res) {
   });
 })
 
+// 用户登录
 router.post('/login', function (req, res) {
   var postData = {
     username: req.body.username,

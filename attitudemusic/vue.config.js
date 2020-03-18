@@ -37,6 +37,11 @@ module.exports = {
     overlay: {
       warnings: true,
       errors: true
+    },
+    prosy: {
+      '/':{
+        target: 'http://192.168.2.209:3000'
+      }
     }
   }
 }
