@@ -4,7 +4,7 @@ var router = express.Router()
 var User = require('./models/user.js')
 var multer = require('multer')
 
-router.get('/', function (req, resU) {
+router.get('/', function (req, res) {
   var scriptStr = `hello world`
   res.end(scriptStr)
 })

@@ -34,14 +34,24 @@ module.exports = {
     }
   },
   devServer: {
-    overlay: {
-      warnings: true,
-      errors: true
-    },
-    prosy: {
-      '/':{
-        target: 'http://192.168.2.209:3000'
-      }
-    }
+    // overlay: {
+    //   warnings: true,
+    //   errors: true
+    // },
+    // proxy: {
+      // '/':{
+      //   target: 'http://192.168.2.209:3000',
+      //   secure: false,
+      //   changeOrigin: true,
+      //   ws: true, // websocket代理
+      // },
+      // '/test':{
+      //   target: 'http://192.168.2.209:4000',
+      //   secure: false,
+      //   changeOrigin: true,
+      //   ws: true, // websocket代理
+      // },
+      
+    // }
   }
 }

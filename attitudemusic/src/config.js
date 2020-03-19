@@ -1,6 +1,6 @@
 // 网络请求地址
-export const URL = 'http://localhost:3000'
-export const ATMURL = 'http://localhost:4000'
+export const URL = 'http://192.168.2.209:3000'
+export const ATMURL = 'http://192.168.2.209:4000'
 
 // 版本号
 export const VERSION = '1.6.1'
