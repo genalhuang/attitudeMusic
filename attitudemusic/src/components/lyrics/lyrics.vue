@@ -59,7 +59,7 @@ export default {
   },
   computed: {
     lyricTop () {
-      return `transform :translate3d(0, ${-34 * (this.lyricIndex + this.top)}px, 0)`
+      return `transform :translate3d(0, ${(-52 * this.lyricIndex) + this.top}px, 0)`
     }
   },
   mounted () {
@@ -122,6 +122,7 @@ export default {
     rgba(255, 255, 255, 0) 100%
   );
   .music-lyric-items {
+    margin-top: 200px;
     text-align: center;
     line-height: 34px;
     font-size: @font_size_large;

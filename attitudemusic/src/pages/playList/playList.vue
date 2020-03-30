@@ -86,7 +86,7 @@ export default {
     display: flex;
     height: 100%;
     .playList-left {
-      width: 50%;
+      width: 40%;
       .playList-img {
         height: 260px;
         width: 260px;
@@ -101,7 +101,7 @@ export default {
       }
     }
     .playList-right {
-      width: 50%;
+      width: 40%;
     }
   }
   .playList-comment {
