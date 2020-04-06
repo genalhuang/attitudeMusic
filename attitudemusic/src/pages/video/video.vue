@@ -22,6 +22,7 @@
           <div class='text' v-if='!spinning'>
             {{item}}
             <a-button v-if='!spinning' type='danger' @click='deleteVideo(item)'><a-icon type="delete" />删除</a-button>
+            <a-button @click='share'><a-icon type="share-alt" /></a-button>
           </div>
         </div>
       </div>
@@ -115,6 +116,9 @@ export default {
       }
       this.spinning = false;
       return false;
+    },
+    share() {
+      this.$message.success('分享成功');
     },
     async deleteVideo(video) {
       const that = this;
