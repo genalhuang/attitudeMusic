@@ -1,20 +1,25 @@
 # ATM态度音乐
 
+## 界面
+![态度音乐](./assets/1.png)
+
 ## 环境
   node
   mongodb
 
 ## 启动
 ```
-  新建终端1
+  启动前端服务
   cd attitudemusic
   npm i
   npm run serve
-  新建终端2
+
+  启动后端服务
   cd attitudeBackground
   npm i
   nodemon app.js
-  新建终端3
+
+  启动资源服务
   cd NeteaseCloudMusicApi-master
   npm i
   nodemon app.js
