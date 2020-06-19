@@ -25,7 +25,7 @@
   nodemon app.js
 ```
 ## 作者
-  github: [edison](https://github.com/krisguanxi)
+  github: [edison](https://github.com/genaller)
 
 ## 免责声明
   本站音频文件来自各网站接口，本站不会修改任何音频文件
