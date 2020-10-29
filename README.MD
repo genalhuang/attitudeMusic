@@ -1,25 +1,31 @@
 # ATM态度音乐
 
-## 环境
-  安装node就行
+## 界面
+![态度音乐](./assets/1.png)
 
-## 超级无敌简单运行方法
+## 环境
+  node
+  mongodb
+
+## 启动
 ```
-  新建终端1
+  启动前端服务
   cd attitudemusic
   npm i
   npm run serve
-  新建终端2
+
+  启动后端服务
   cd attitudeBackground
   npm i
   nodemon app.js
-  新建终端3
+
+  启动资源服务
   cd NeteaseCloudMusicApi-master
   npm i
   nodemon app.js
 ```
 ## 作者
-  github: [edison](https://github.com/krisguanxi)
+  github: [edison](https://github.com/genaller)
 
 ## 免责声明
   本站音频文件来自各网站接口，本站不会修改任何音频文件
